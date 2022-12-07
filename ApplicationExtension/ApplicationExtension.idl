@@ -1,0 +1,29 @@
+// ApplicationExtension.idl : type library source for ApplicationExtension.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (ApplicationExtension.tlb).
+
+[ uuid(5e9e9036-bec1-4ed8-b382-855530357dcf), version(1.0) ]
+library ApplicationExtension
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//  Primary dispatch interface for CApplicationExtensionDoc
+
+	[ uuid(53928aa9-efb3-4c89-b974-123cfa208245) ]
+	dispinterface IApplicationExtension
+	{
+		properties:
+
+		methods:
+	};
+
+	//  Class information for CApplicationExtensionDoc
+
+	[ uuid(079c9fdc-aa0f-4ccf-82a7-62e3490867ab) ]
+	coclass ApplicationExtension
+	{
+		[default] dispinterface IApplicationExtension;
+	};
+};
