@@ -35,7 +35,7 @@ public:
 	);
 
 	DWORD	GetProcessPID(
-		_In_ LPWSTR szGameName
+		_In_ LPWSTR szGaName
 	);
 
 	PVOID	GetModuleBaseAddress(

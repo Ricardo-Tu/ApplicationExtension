@@ -1,19 +1,23 @@
 #include "pch.h"
 #include <Windows.h>
 #include <TlHelp32.h>
-
 #include "common.h"
+
 
 /*
 
 	Routine Description:
+
 		This Routine init CrackRE32 class static variable.
 
 	Arguments:
+
 		szGameName - Supplies the game full name string that you want to modify.
 
 	Return Value:
-		Return TRUE if all routines implement
+
+		Return true if all routines implement.
+
 */
 _Use_decl_annotations_ BOOLEAN CrackRE32::InitGameInformation(
 	_In_ LPWSTR szGameName
@@ -37,17 +41,20 @@ _Use_decl_annotations_ BOOLEAN CrackRE32::InitGameInformation(
 /*
 
 	Routine Description:
+
 		This Routine get process ID by process name.
 
 	Arguments:
-		szGameName - Supplies the process that you want to get PID full name wide string .
+
+		szGaName - Supplies the process that you want to get PID full name wide string .
 
 	Return Value:
+
 		Return target process ID that you want to get to if all routines implement successfully.
 
 */
 _Use_decl_annotations_ DWORD CrackRE32::GetProcessPID(
-	_In_ LPWSTR szGameName
+	_In_ LPWSTR szGaName
 )
 {
 	DWORD status = TRUE;
@@ -80,7 +87,7 @@ _Use_decl_annotations_ DWORD CrackRE32::GetProcessPID(
 
 	do
 	{
-		if (wcscmp(lpInfo->szExeFile, szGameName) == 0)
+		if (wcscmp(lpInfo->szExeFile, szGaName) == 0)
 		{
 			CloseHandle(hProcessSnap);
 
@@ -94,10 +101,16 @@ _Use_decl_annotations_ DWORD CrackRE32::GetProcessPID(
 
 /*
 	Routine Description:
+
 		This routine get module base address by module full name.
 
 	Arguments:
-	 szModuleName - Supplies the module full name that you want get base address wide char string.
+
+		szModuleName - Supplies the module Wide character string of the whole process command line that you want get base address.
+
+	 ReturnValue:
+
+		PVOID - Module base address that you Supplies.
 
 */
 _Use_decl_annotations_ PVOID CrackRE32::GetModuleBaseAddress(
@@ -148,7 +161,16 @@ _Use_decl_annotations_ PVOID CrackRE32::GetModuleBaseAddress(
 /*
 
 	Routine Description:
+
 		Evevate process privileges before modifying other process.
+
+	Arguments:
+
+		None
+
+	ReturnValue:
+
+		NTSTATUS - Status of operation
 
 */
 NTSTATUS CrackRE32::elevateprivileges()
@@ -196,6 +218,24 @@ NTSTATUS CrackRE32::elevateprivileges()
 }
 
 
+/*
+
+	Routine Description:
+
+		This routine write data to multi-level offset pointers
+
+	Arguments:
+
+		lpBase - Modify module base address.
+		num - Data that will be written in.
+		offset - The offset array address of each level pointer relative to the base address of the module.
+		offsetMaxIndex - The offset array max index.
+
+	ReturnValue:
+
+		NTSTATUS - Status of operation.
+
+*/
 _Use_decl_annotations_ NTSTATUS CrackRE32::ModifyLayerMemory32(
 	_In_ PVOID lpBase,
 	_In_ ULONG num,
@@ -227,6 +267,25 @@ _Use_decl_annotations_ NTSTATUS CrackRE32::ModifyLayerMemory32(
 	return NTSTATUS::NoneError;
 }
 
+
+/*
+
+	Routine Description:
+
+		This is routine read data from multi-level offset pointers
+
+	Arguments:
+
+		lpBase - Modify module base address.
+		num - Data stored after reading.
+		offset - The offset array address of each level pointer relative to the base address of the module.
+		offsetMaxIndex - The offset array max index.
+
+	ReturnValue:
+
+		NTSTATUS - Status of operation.
+
+*/
 _Use_decl_annotations_ NTSTATUS CrackRE32::ReadLayerMemory32(
 	_In_ PVOID lpBase,
 	_Out_ PULONG pOutputNum,
@@ -253,6 +312,27 @@ _Use_decl_annotations_ NTSTATUS CrackRE32::ReadLayerMemory32(
 	return NTSTATUS::NoneError;
 }
 
+/*
+
+	Routine Description:
+
+		This is routine injuct shellcode.
+
+	Arguments:
+
+		lpModifiedAddress - Address that will be injuct shellcode.
+		injuctcode - Data address of shellcode.
+		injuctcodelength - Sizeof shellcode that will be injuct.
+		injuctcodeWriteOrNot - Whether the shellcode is written in the head of the application address applied to the target process.
+		sourcecode - Data address of sourcecode that will be overwrite.
+		sourcecodelength - Sizeof sourcecode that will be write.
+		sourcecodeWriteOrNot - Whether the sourcecode is written in the after shellcode. 
+
+	ReturnValue:
+
+		NTSTATUS - Status of operation.
+
+*/
 _Use_decl_annotations_ NTSTATUS CrackRE32::AssemblyInject32(
 	_In_ PVOID lpModifiedAddress,
 	_In_ BYTE* injuctcode,
@@ -340,6 +420,7 @@ _Use_decl_annotations_ NTSTATUS CrackRE32::AssemblyInject32(
 	return NTSTATUS::NoneError;
 }
 
+
 _Use_decl_annotations_ CrackRE32::CrackRE32(
 	_In_ LPWSTR szGameStr
 )
@@ -354,10 +435,28 @@ _Use_decl_annotations_ CrackRE32::CrackRE32(
 		AfxMessageBox(L"Init game information failed!\n");
 }
 
+
 CrackRE32::~CrackRE32()
 {
 }
 
+
+/*
+
+	Routine Description:
+
+		This is routine start up remote thread in target process.
+
+	Arguments:
+
+		shellcode - The shellocde that will execute in remote thread.
+		shellcodelength - Size of shellcode.
+
+	ReturnValue:
+
+		NTSTATUS - Status of operation.
+
+*/
 _Use_decl_annotations_ NTSTATUS CrackRE32::RemoteThreadExecuteShellCode(
 	BYTE* shellcode,
 	ULONG shellcodelength

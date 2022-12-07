@@ -1,27 +1,27 @@
 
-// ApplicationExtension.cpp : Defines the class behaviors for the application.
+// pvz.cpp : Defines the class behaviors for the application.
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "ApplicationExtension.h"
-#include "ApplicationExtensionDlg.h"
+#include "pvz.h"
+#include "pvzDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CApplicationExtensionApp
+// CpvzApp
 
-BEGIN_MESSAGE_MAP(CApplicationExtensionApp, CWinApp)
+BEGIN_MESSAGE_MAP(CpvzApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// CApplicationExtensionApp construction
+// CpvzApp construction
 
-CApplicationExtensionApp::CApplicationExtensionApp()
+CpvzApp::CpvzApp()
 {
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -31,19 +31,19 @@ CApplicationExtensionApp::CApplicationExtensionApp()
 }
 
 
-// The one and only CApplicationExtensionApp object
+// The one and only CpvzApp object
 
-CApplicationExtensionApp theApp;
+CpvzApp theApp;
 
 const GUID CDECL BASED_CODE _tlid =
-		{0x5e9e9036,0xbec1,0x4ed8,{0xb3,0x82,0x85,0x55,0x30,0x35,0x7d,0xcf}};
+		{0x492f2e9a,0xe4da,0x477e,{0xaa,0x6c,0xa1,0x46,0xba,0x05,0xa4,0x35}};
 const WORD _wVerMajor = 1;
 const WORD _wVerMinor = 0;
 
 
-// CApplicationExtensionApp initialization
+// CpvzApp initialization
 
-BOOL CApplicationExtensionApp::InitInstance()
+BOOL CpvzApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -117,7 +117,7 @@ BOOL CApplicationExtensionApp::InitInstance()
 			return FALSE;
 	}
 
-	CApplicationExtensionDlg dlg;
+	CpvzDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
@@ -151,7 +151,7 @@ BOOL CApplicationExtensionApp::InitInstance()
 	return FALSE;
 }
 
-int CApplicationExtensionApp::ExitInstance()
+int CpvzApp::ExitInstance()
 {
 	AfxOleTerm(FALSE);
 

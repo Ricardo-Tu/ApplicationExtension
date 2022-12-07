@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ApplicationExtension.h">
+    <ClInclude Include="pvz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ApplicationExtensionDlg.h">
+    <ClInclude Include="pvzDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DlgProxy.h">
@@ -39,12 +39,18 @@
     <ClInclude Include="crack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pvzcrack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ApplicationExtension.cpp">
+    <ClCompile Include="pvz.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ApplicationExtensionDlg.cpp">
+    <ClCompile Include="pvzDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DlgProxy.cpp">
@@ -56,25 +62,31 @@
     <ClCompile Include="crack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pvzcrack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="ApplicationExtension.idl">
+    <Midl Include="pvz.idl">
       <Filter>Source Files</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ApplicationExtension.reg" />
-    <None Include="res\ApplicationExtension.rc2">
+    <None Include="pvz.reg" />
+    <None Include="res\pvz.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ApplicationExtension.rc">
+    <ResourceCompile Include="pvz.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\ApplicationExtension.ico">
+    <Image Include="res\pvz.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\mypvz.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

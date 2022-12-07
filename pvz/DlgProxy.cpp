@@ -4,20 +4,20 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "ApplicationExtension.h"
+#include "pvz.h"
 #include "DlgProxy.h"
-#include "ApplicationExtensionDlg.h"
+#include "pvzDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CApplicationExtensionDlgAutoProxy
+// CpvzDlgAutoProxy
 
-IMPLEMENT_DYNCREATE(CApplicationExtensionDlgAutoProxy, CCmdTarget)
+IMPLEMENT_DYNCREATE(CpvzDlgAutoProxy, CCmdTarget)
 
-CApplicationExtensionDlgAutoProxy::CApplicationExtensionDlgAutoProxy()
+CpvzDlgAutoProxy::CpvzDlgAutoProxy()
 {
 	EnableAutomation();
 
@@ -32,16 +32,16 @@ CApplicationExtensionDlgAutoProxy::CApplicationExtensionDlgAutoProxy()
 	ASSERT_VALID(AfxGetApp()->m_pMainWnd);
 	if (AfxGetApp()->m_pMainWnd)
 	{
-		ASSERT_KINDOF(CApplicationExtensionDlg, AfxGetApp()->m_pMainWnd);
-		if (AfxGetApp()->m_pMainWnd->IsKindOf(RUNTIME_CLASS(CApplicationExtensionDlg)))
+		ASSERT_KINDOF(CpvzDlg, AfxGetApp()->m_pMainWnd);
+		if (AfxGetApp()->m_pMainWnd->IsKindOf(RUNTIME_CLASS(CpvzDlg)))
 		{
-			m_pDialog = reinterpret_cast<CApplicationExtensionDlg*>(AfxGetApp()->m_pMainWnd);
+			m_pDialog = reinterpret_cast<CpvzDlg*>(AfxGetApp()->m_pMainWnd);
 			m_pDialog->m_pAutoProxy = this;
 		}
 	}
 }
 
-CApplicationExtensionDlgAutoProxy::~CApplicationExtensionDlgAutoProxy()
+CpvzDlgAutoProxy::~CpvzDlgAutoProxy()
 {
 	// To terminate the application when all objects created with
 	// 	with automation, the destructor calls AfxOleUnlockApp.
@@ -51,7 +51,7 @@ CApplicationExtensionDlgAutoProxy::~CApplicationExtensionDlgAutoProxy()
 	AfxOleUnlockApp();
 }
 
-void CApplicationExtensionDlgAutoProxy::OnFinalRelease()
+void CpvzDlgAutoProxy::OnFinalRelease()
 {
 	// When the last reference for an automation object is released
 	// OnFinalRelease is called.  The base class will automatically
@@ -61,27 +61,27 @@ void CApplicationExtensionDlgAutoProxy::OnFinalRelease()
 	CCmdTarget::OnFinalRelease();
 }
 
-BEGIN_MESSAGE_MAP(CApplicationExtensionDlgAutoProxy, CCmdTarget)
+BEGIN_MESSAGE_MAP(CpvzDlgAutoProxy, CCmdTarget)
 END_MESSAGE_MAP()
 
-BEGIN_DISPATCH_MAP(CApplicationExtensionDlgAutoProxy, CCmdTarget)
+BEGIN_DISPATCH_MAP(CpvzDlgAutoProxy, CCmdTarget)
 END_DISPATCH_MAP()
 
-// Note: we add support for IID_IApplicationExtension to support typesafe binding
+// Note: we add support for IID_Ipvz to support typesafe binding
 //  from VBA.  This IID must match the GUID that is attached to the
 //  dispinterface in the .IDL file.
 
-// {53928aa9-efb3-4c89-b974-123cfa208245}
-static const IID IID_IApplicationExtension =
-{0x53928aa9,0xefb3,0x4c89,{0xb9,0x74,0x12,0x3c,0xfa,0x20,0x82,0x45}};
+// {e49e3495-9343-466f-ba14-f2d29aefc0cf}
+static const IID IID_Ipvz =
+{0xe49e3495,0x9343,0x466f,{0xba,0x14,0xf2,0xd2,0x9a,0xef,0xc0,0xcf}};
 
-BEGIN_INTERFACE_MAP(CApplicationExtensionDlgAutoProxy, CCmdTarget)
-	INTERFACE_PART(CApplicationExtensionDlgAutoProxy, IID_IApplicationExtension, Dispatch)
+BEGIN_INTERFACE_MAP(CpvzDlgAutoProxy, CCmdTarget)
+	INTERFACE_PART(CpvzDlgAutoProxy, IID_Ipvz, Dispatch)
 END_INTERFACE_MAP()
 
 // The IMPLEMENT_OLECREATE2 macro is defined in pch.h of this project
-// {079c9fdc-aa0f-4ccf-82a7-62e3490867ab}
-IMPLEMENT_OLECREATE2(CApplicationExtensionDlgAutoProxy, "ApplicationExtension.Application", 0x079c9fdc,0xaa0f,0x4ccf,0x82,0xa7,0x62,0xe3,0x49,0x08,0x67,0xab)
+// {2c259e82-0471-4749-b7ca-e7a0595938ae}
+IMPLEMENT_OLECREATE2(CpvzDlgAutoProxy, "pvz.Application", 0x2c259e82,0x0471,0x4749,0xb7,0xca,0xe7,0xa0,0x59,0x59,0x38,0xae)
 
 
-// CApplicationExtensionDlgAutoProxy message handlers
+// CpvzDlgAutoProxy message handlers

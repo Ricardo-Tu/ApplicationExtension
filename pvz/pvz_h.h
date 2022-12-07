@@ -6,7 +6,7 @@
  /* File created by MIDL compiler version 8.01.0626 */
 /* at Tue Jan 19 11:14:07 2038
  */
-/* Compiler settings for ApplicationExtension.idl:
+/* Compiler settings for pvz.idl:
     Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.01.0626 
     protocol : all , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -31,8 +31,8 @@
 #endif /* __RPCNDR_H_VERSION__ */
 
 
-#ifndef __ApplicationExtension_h_h__
-#define __ApplicationExtension_h_h__
+#ifndef __pvz_h_h__
+#define __pvz_h_h__
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
 #pragma once
@@ -48,23 +48,23 @@
 
 /* Forward Declarations */ 
 
-#ifndef __IApplicationExtension_FWD_DEFINED__
-#define __IApplicationExtension_FWD_DEFINED__
-typedef interface IApplicationExtension IApplicationExtension;
+#ifndef __Ipvz_FWD_DEFINED__
+#define __Ipvz_FWD_DEFINED__
+typedef interface Ipvz Ipvz;
 
-#endif 	/* __IApplicationExtension_FWD_DEFINED__ */
+#endif 	/* __Ipvz_FWD_DEFINED__ */
 
 
-#ifndef __ApplicationExtension_FWD_DEFINED__
-#define __ApplicationExtension_FWD_DEFINED__
+#ifndef __pvz_FWD_DEFINED__
+#define __pvz_FWD_DEFINED__
 
 #ifdef __cplusplus
-typedef class ApplicationExtension ApplicationExtension;
+typedef class pvz pvz;
 #else
-typedef struct ApplicationExtension ApplicationExtension;
+typedef struct pvz pvz;
 #endif /* __cplusplus */
 
-#endif 	/* __ApplicationExtension_FWD_DEFINED__ */
+#endif 	/* __pvz_FWD_DEFINED__ */
 
 
 #ifdef __cplusplus
@@ -73,67 +73,67 @@ extern "C"{
 
 
 
-#ifndef __ApplicationExtension_LIBRARY_DEFINED__
-#define __ApplicationExtension_LIBRARY_DEFINED__
+#ifndef __pvz_LIBRARY_DEFINED__
+#define __pvz_LIBRARY_DEFINED__
 
-/* library ApplicationExtension */
+/* library pvz */
 /* [version][uuid] */ 
 
 
-EXTERN_C const IID LIBID_ApplicationExtension;
+EXTERN_C const IID LIBID_pvz;
 
-#ifndef __IApplicationExtension_DISPINTERFACE_DEFINED__
-#define __IApplicationExtension_DISPINTERFACE_DEFINED__
+#ifndef __Ipvz_DISPINTERFACE_DEFINED__
+#define __Ipvz_DISPINTERFACE_DEFINED__
 
-/* dispinterface IApplicationExtension */
+/* dispinterface Ipvz */
 /* [uuid] */ 
 
 
-EXTERN_C const IID DIID_IApplicationExtension;
+EXTERN_C const IID DIID_Ipvz;
 
 #if defined(__cplusplus) && !defined(CINTERFACE)
 
-    MIDL_INTERFACE("53928aa9-efb3-4c89-b974-123cfa208245")
-    IApplicationExtension : public IDispatch
+    MIDL_INTERFACE("e49e3495-9343-466f-ba14-f2d29aefc0cf")
+    Ipvz : public IDispatch
     {
     };
     
 #else 	/* C style interface */
 
-    typedef struct IApplicationExtensionVtbl
+    typedef struct IpvzVtbl
     {
         BEGIN_INTERFACE
         
         DECLSPEC_XFGVIRT(IUnknown, QueryInterface)
         HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
-            IApplicationExtension * This,
+            Ipvz * This,
             /* [in] */ REFIID riid,
             /* [annotation][iid_is][out] */ 
             _COM_Outptr_  void **ppvObject);
         
         DECLSPEC_XFGVIRT(IUnknown, AddRef)
         ULONG ( STDMETHODCALLTYPE *AddRef )( 
-            IApplicationExtension * This);
+            Ipvz * This);
         
         DECLSPEC_XFGVIRT(IUnknown, Release)
         ULONG ( STDMETHODCALLTYPE *Release )( 
-            IApplicationExtension * This);
+            Ipvz * This);
         
         DECLSPEC_XFGVIRT(IDispatch, GetTypeInfoCount)
         HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )( 
-            IApplicationExtension * This,
+            Ipvz * This,
             /* [out] */ UINT *pctinfo);
         
         DECLSPEC_XFGVIRT(IDispatch, GetTypeInfo)
         HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )( 
-            IApplicationExtension * This,
+            Ipvz * This,
             /* [in] */ UINT iTInfo,
             /* [in] */ LCID lcid,
             /* [out] */ ITypeInfo **ppTInfo);
         
         DECLSPEC_XFGVIRT(IDispatch, GetIDsOfNames)
         HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )( 
-            IApplicationExtension * This,
+            Ipvz * This,
             /* [in] */ REFIID riid,
             /* [size_is][in] */ LPOLESTR *rgszNames,
             /* [range][in] */ UINT cNames,
@@ -142,7 +142,7 @@ EXTERN_C const IID DIID_IApplicationExtension;
         
         DECLSPEC_XFGVIRT(IDispatch, Invoke)
         /* [local] */ HRESULT ( STDMETHODCALLTYPE *Invoke )( 
-            IApplicationExtension * This,
+            Ipvz * This,
             /* [annotation][in] */ 
             _In_  DISPID dispIdMember,
             /* [annotation][in] */ 
@@ -161,11 +161,11 @@ EXTERN_C const IID DIID_IApplicationExtension;
             _Out_opt_  UINT *puArgErr);
         
         END_INTERFACE
-    } IApplicationExtensionVtbl;
+    } IpvzVtbl;
 
-    interface IApplicationExtension
+    interface Ipvz
     {
-        CONST_VTBL struct IApplicationExtensionVtbl *lpVtbl;
+        CONST_VTBL struct IpvzVtbl *lpVtbl;
     };
 
     
@@ -173,26 +173,26 @@ EXTERN_C const IID DIID_IApplicationExtension;
 #ifdef COBJMACROS
 
 
-#define IApplicationExtension_QueryInterface(This,riid,ppvObject)	\
+#define Ipvz_QueryInterface(This,riid,ppvObject)	\
     ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
 
-#define IApplicationExtension_AddRef(This)	\
+#define Ipvz_AddRef(This)	\
     ( (This)->lpVtbl -> AddRef(This) ) 
 
-#define IApplicationExtension_Release(This)	\
+#define Ipvz_Release(This)	\
     ( (This)->lpVtbl -> Release(This) ) 
 
 
-#define IApplicationExtension_GetTypeInfoCount(This,pctinfo)	\
+#define Ipvz_GetTypeInfoCount(This,pctinfo)	\
     ( (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo) ) 
 
-#define IApplicationExtension_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
+#define Ipvz_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
     ( (This)->lpVtbl -> GetTypeInfo(This,iTInfo,lcid,ppTInfo) ) 
 
-#define IApplicationExtension_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
+#define Ipvz_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
     ( (This)->lpVtbl -> GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId) ) 
 
-#define IApplicationExtension_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
+#define Ipvz_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
     ( (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr) ) 
 
 #endif /* COBJMACROS */
@@ -201,17 +201,17 @@ EXTERN_C const IID DIID_IApplicationExtension;
 #endif 	/* C style interface */
 
 
-#endif 	/* __IApplicationExtension_DISPINTERFACE_DEFINED__ */
+#endif 	/* __Ipvz_DISPINTERFACE_DEFINED__ */
 
 
-EXTERN_C const CLSID CLSID_ApplicationExtension;
+EXTERN_C const CLSID CLSID_pvz;
 
 #ifdef __cplusplus
 
-class DECLSPEC_UUID("079c9fdc-aa0f-4ccf-82a7-62e3490867ab")
-ApplicationExtension;
+class DECLSPEC_UUID("2c259e82-0471-4749-b7ca-e7a0595938ae")
+pvz;
 #endif
-#endif /* __ApplicationExtension_LIBRARY_DEFINED__ */
+#endif /* __pvz_LIBRARY_DEFINED__ */
 
 /* Additional Prototypes for ALL interfaces */
 
