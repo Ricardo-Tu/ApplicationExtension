@@ -429,25 +429,6 @@ VOID __stdcall ModifyCardSlotPlant(ULONG cardslot, ULONG plant)
 
 VOID __stdcall Plant(ULONG row, ULONG list, ULONG plant)
 {
-	/*
-
-		60                                  | pushad                                  |
-		6A FF                               | push FFFFFFFF                           | 固定值-1
-		6A 00                               | push 0                                  | 压入植物序号
-		B8 01000000                         | mov eax,1                               | x坐标保存在eax中
-		6A 02                               | push 2                                  | 把y坐标压入栈中
-		8B1D C86B4900                       | mov ebx,dword ptr ds:[496BC8]           | 压入可变ebp
-		8B5B 08                             | mov ebx,dword ptr ds:[ebx+8]            |
-		8B9B 44010000                       | mov ebx,dword ptr ds:[ebx+144]          |
-		8B9B 1C010000                       | mov ebx,dword ptr ds:[ebx+11C]          |
-		53                                  | push ebx                                |
-		BB 20D14000                         | mov ebx,40D120                          |
-		FFD3                                | call ebx                                |
-		61                                  | popad                                   |
-		C3                                  | ret                                     |
-
-
-	*/
 	BYTE shellcode[] = { "\x60\x6A\xFF\x6A\x00\xB8\x01\x00\x00\x00\x6A\x02\x8B\x1D\xC8\x6B\x49\x00\x8B\x5B\x08\x8B\x9B\x44\x01\x00\x00\x8B\x9B\x1C\x01\x00\x00\x53\xBB\x20\xD1\x40\x00\xFF\xD3\x61\xC3" };
 
 	BOOLEAN status = FALSE;
@@ -523,25 +504,6 @@ VOID __stdcall RecoverPlantOverlappint()
 
 VOID __stdcall ZombiesPlant(ULONG row, ULONG list, ULONG zombies)
 {
-
-	/*
-
-			60                                  | pushad                                  |
-			6A 08                               | push 8                                  | y-coordinate
-			6A 05                               | push 5                                  | zombies class
-			B8 02000000                         | mov eax,2                               | x-coordinate
-			8B1D 24636A00                       | mov ebx,dword ptr ds:[A6324]            |
-			8B9B D8010000                       | mov ebx,dword ptr ds:[ebx+1D8]          |
-			8B9B 98000000                       | mov ebx,dword ptr ds:[ebx+98]           |
-			8B9B 60010000                       | mov ebx,dword ptr ds:[ebx+160]          |
-			8BCB                                | mov ecx,ebx                             |
-			BB F0A04200                         | mov ebx,42A0F0                          |
-			FFD3                                | call ebx                                |
-			61                                  | popad                                   |
-			C3                                  | ret                                     |
-
-	*/
-
 	BYTE shellcode[] = { "\x60\x6A\x08\x6A\x05\xB8\x02\x00\x00\x00\x8B\x1D\x24\x63\x6A\x00\x8B\x9B\xD8\x01\x00\x00\x8B\x9B\x98\x00\x00\x00\x8B\x9B\x60\x01\x00\x00\x8B\xCB\xBB\xF0\xA0\x42\x00\xFF\xD3\x61\xC3" };
 
 	BOOLEAN status = FALSE;
@@ -602,7 +564,6 @@ VOID __stdcall PurpleDirectPlant()
 		g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
 	}
 }
-
 
 
 VOID __stdcall	RecoverPurpleDirectPlant()
@@ -749,17 +710,6 @@ VOID __stdcall RecoverKillAllZombies()
 
 VOID __stdcall KillOneZombies()
 {
-	/*
-		53                   | push ebx
-		BB 44332211          | mov ebx,11223344
-		8B03                 | mov eax,dword ptr ds:[ebx]
-		C703 00000000        | mov dword ptr ds:[ebx],0
-		83F8 00              | cmp eax,0
-		74 07                | je first_test.4C3273
-		C746 28 03000000     | mov dword ptr ds:[esi+28],3
-		5B                   | pop ebx
-	*/
-
 	BYTE originalcode[] = { "\x8b\x46\x28\x83\xf8\x02" }, injuctcode[] = { "\x53\xBB\x44\x33\x22\x11\x8B\x03\xC7\x03\x00\x00\x00\x00\x83\xF8\x00\x74\x07\xC7\x46\x28\x03\x00\x00\x00\x5B" };
 
 	NTSTATUS status = NTSTATUS::NoneError;
@@ -831,13 +781,13 @@ VOID __stdcall RecoverKillOneZombies()
 	return VOID();
 }
 
+
 /*
 
 	Routine Description:
 		This timer routine is generate random number.
 
 */
-
 VOID RandomBulletNumberWriteTimer(HWND, UINT, UINT_PTR, DWORD)
 {
 	DWORD32 randomNumber = rand() % 13;
@@ -864,13 +814,6 @@ VOID RandomBulletNumberWriteTimer(HWND, UINT, UINT_PTR, DWORD)
 
 VOID __stdcall RomdomizedBullet()
 {
-	/*
-
-		B8 44332211 |   mov eax,11223344
-		8B00        |   mov eax,dword ptr ds:[eax]
-		3E:8945 5C  |   mov dword ptr ds:[ebp+5C],eax
-
-	*/
 	NTSTATUS status = NTSTATUS::NoneError;
 
 	BYTE injuctcode[] = { "\xB8\x44\x33\x22\x11\x8B\x00\x3E\x89\x45\x5C" },
@@ -920,6 +863,7 @@ VOID __stdcall RomdomizedBullet()
 	return VOID();
 }
 
+
 VOID __stdcall RecoverRomdomizedBullet()
 {
 	BYTE  originalcode[] = { "\x89\x45\x5c\x8b\xc6\xd9\x5c\x24\x18" };
@@ -945,7 +889,6 @@ VOID __stdcall RecoverRomdomizedBullet()
 
 	return VOID();
 }
-
 
 
 VOID __stdcall ClayPotPerspective()
@@ -975,6 +918,7 @@ VOID __stdcall ClayPotPerspective()
 
 	return VOID();
 }
+
 
 VOID __stdcall RecoverClayPotPerspective()
 {
@@ -1082,6 +1026,7 @@ VOID __stdcall RecoverQucikConveyorBelt()
 	return VOID();
 }
 
+
 VOID __stdcall ListPlant()
 {
 	BYTE purposecode[] = { "\x90\x90\x90\x90\x90\x90" };
@@ -1131,14 +1076,8 @@ VOID __stdcall RecoverListPlant()
 }
 
 
-
 VOID __stdcall ChangeCornBulletToButter()
 {
-	/*
-		83F8 0A        | cmp eax,A
-		75 05          | jne first_test.4C3284
-		B8 0C000000    | mov eax,C
-	*/
 	NTSTATUS status = NTSTATUS::NoneError;
 
 	BYTE originalcode[] = { "\x89\x45\x5c\x8b\xc6\xd9\x5c\x24\x18" },
@@ -1165,6 +1104,7 @@ VOID __stdcall ChangeCornBulletToButter()
 
 	return VOID();
 }
+
 
 VOID __stdcall CleanTombstone()
 {
@@ -1209,6 +1149,7 @@ VOID __stdcall CleanTombstone()
 
 	return VOID();
 }
+
 
 VOID __stdcall CleanPlants()
 {
@@ -1278,6 +1219,7 @@ VOID RandomPlantTimer(HWND, UINT, UINT_PTR, DWORD)
 	}
 }
 
+	
 VOID __stdcall RomdomPlant()
 {
 	SetTimer(AfxGetMainWnd()->GetSafeHwnd(), RANDOMIZEDPLANT, 10u, (TIMERPROC)RandomPlantTimer);
@@ -1294,15 +1236,6 @@ VOID __stdcall CancelRomdomPlant()
 
 VOID __stdcall ChangeCornBulletToBomb()
 {
-	/*
-		83F8 0A          | cmp eax,A
-		75 05            | jne first_test.4C3266
-		B8 0B000000      | mov eax,B
-		83F8 0C          | cmp eax,C
-		75 05            | jne first_test.4C3270
-		B8 0B000000      | mov eax,B
-	*/
-
 	NTSTATUS status = NTSTATUS::NoneError;
 
 	BYTE originalcode[] = { "\x89\x45\x5c\x8b\xc6\xd9\x5c\x24\x18" },
@@ -1556,7 +1489,6 @@ VOID __stdcall	RecoverMagneticMushRoomColdDown()
 }
 
 
-
 VOID WINAPI ClearFog()
 {
 	BYTE originalcode[] = { "\x8B\x02\x85\xC0\x89\x44\x24\x3C" },
@@ -1659,7 +1591,6 @@ VOID __stdcall RecoverMushRoomDonotSleep()
 }
 
 
-
 VOID __stdcall SpikeZombies()
 {
 	BYTE purpose[] = { "\x90\x90" };
@@ -1743,7 +1674,6 @@ VOID __stdcall RecoverSpikeZombies()
 	}
 }
 
-// 8B 46 04  56  50  E8 E580EEFF  83 C7 46
 
 VOID __stdcall UndefeatedForever()
 {
@@ -1793,6 +1723,7 @@ VOID __stdcall RecoverUndefeatedForever()
 	}
 }
 
+
 VOID WINAPI PenetrateBullet()
 {
 	BYTE purpssecode[] = { "\xc6\x46\x50\x00" };
@@ -1817,7 +1748,8 @@ VOID WINAPI PenetrateBullet()
 	}
 }
 
-VOID WINAPI RecoverPenetrateBullet()
+
+VOID __stdcall RecoverPenetrateBullet()
 {
 	BYTE originalcode[] = { "\xc6\x46\x50\x01" };
 
@@ -2067,16 +1999,7 @@ VOID __stdcall RecoverBulletTracking()
 		NULL
 	);
 }
-/*
 
-		 60                  | pushad
-		 BE 44332211         | mov esi,11223344
-		 B8 A08D4500         | mov eax,458DA0
-		 FFD0                | call eax
-		 61                  | popad
-		 C3                  | ret
-
-*/
 
 VOID __stdcall StartupFiveCar()
 {
@@ -2150,18 +2073,7 @@ VOID __stdcall StartupFiveCar()
 	}
 }
 
-/*
 
-		60                 | pushad
-		68 44332211        | push 11223344
-		BF 00000000        | mov edi,0
-		8BC7               | mov eax,edi
-		BB 00804500        | mov ebx,40BD0F
-		FFD3               | call ebx
-		61                 | popad
-		C3                 | ret
-
-*/
 VOID __stdcall RecoverFiveCar()
 {
 	NTSTATUS status = NTSTATUS::NoneError;
@@ -2205,7 +2117,6 @@ VOID __stdcall RecoverFiveCar()
 		}
 	}
 }
-
 
 
 VOID __stdcall StartupSixCar()
@@ -2278,6 +2189,7 @@ VOID __stdcall StartupSixCar()
 		}
 	}
 }
+
 
 VOID __stdcall RecoverSixCar()
 {
