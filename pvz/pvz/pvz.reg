@@ -1,0 +1,17 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+
+HKEY_CLASSES_ROOT\pvz.Application = pvz Application
+
+
+HKEY_CLASSES_ROOT\pvz.Application\CLSID = {2c259e82-0471-4749-b7ca-e7a0595938ae}
+
+HKEY_CLASSES_ROOT\CLSID\{2c259e82-0471-4749-b7ca-e7a0595938ae} = pvz Application
+HKEY_CLASSES_ROOT\CLSID\{2c259e82-0471-4749-b7ca-e7a0595938ae}\ProgId = pvz.Application
+
+
+HKEY_CLASSES_ROOT\CLSID\{2c259e82-0471-4749-b7ca-e7a0595938ae}\LocalServer32 = pvz.EXE
