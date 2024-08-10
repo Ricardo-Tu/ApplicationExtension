@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\cs1.6.ico" />
+    <Image Include="res\mycs1.6.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

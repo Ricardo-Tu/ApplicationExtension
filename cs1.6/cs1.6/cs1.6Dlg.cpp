@@ -58,7 +58,7 @@ END_MESSAGE_MAP()
 Ccs16Dlg::Ccs16Dlg(CWnd* pParent /*=nullptr*/)
     : CDialogEx(IDD_CS16_DIALOG, pParent)
 {
-    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    m_hIcon = AfxGetApp()->LoadIcon(IDI_MYICON);
 }
 
 void Ccs16Dlg::DoDataExchange(CDataExchange* pDX)
