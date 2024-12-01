@@ -67,5 +67,5 @@ public:
 
 extern Ccs16Dlg* g_dialog;
 extern std::unique_ptr<game::GameContext> g_pGameContext;
-extern boolean boxperspective_thread_quit_flag;
-extern boolean bone_flag;
+extern bool boxperspective_thread_quit_flag;
+extern bool bone_flag;

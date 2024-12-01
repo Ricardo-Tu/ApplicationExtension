@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "context.hpp"
 #include "tools.hpp"
 
@@ -56,129 +56,6 @@ namespace game {
         return NULL;
     }
 
-
-    /*
-
-        Routine Description:
-
-            This routine write data to multi-level offset pointers
-
-        Arguments:
-
-            lpBase - Modify module base address.
-            num - Data that will be written in.
-            offset - The offset array address of each level pointer relative to the base address of the module.
-            offsetMaxIndex - The offset array max index.
-
-        ReturnValue:
-
-            NTSTATUS - Status of operation.
-
-    */
-    boolean ModuleContext::ModifyMultiLevelLayerMemory32(uint32_t num, std::vector<uint32_t> layerOffset)
-    {
-        boolean status = FALSE;
-
-        char* pTemp = (char*)lpModuleAddress;
-
-        for (uint32_t i = 0; i < layerOffset.size() - 1; i++)
-        {
-            pTemp = (char*)pTemp + (uint32_t)(layerOffset[i]);
-
-            ReadProcessMemory(hGame, (void*)pTemp, &pTemp, sizeof(uint32_t), NULL);
-        }
-
-        if (!pTemp)
-            return false;
-
-        pTemp = (char*)pTemp + (uint32_t)(layerOffset.back());
-
-        status = WriteProcessMemory(hGame, (void*)pTemp, &num, sizeof(uint32_t), NULL);
-
-        if (!status)
-            return false;
-
-        return true;
-    }
-
-    boolean ModuleContext::ModifyMultiLevelLayerMemory32float(float num, std::vector<uint32_t> layerOffset)
-    {
-        boolean status = FALSE;
-
-        char* pTemp = (char*)lpModuleAddress;
-
-        for (uint32_t i = 0; i < layerOffset.size() - 1; i++)
-        {
-            pTemp = (char*)pTemp + (uint32_t)(layerOffset[i]);
-
-            ReadProcessMemory(hGame, (void*)pTemp, &pTemp, sizeof(uint32_t), NULL);
-        }
-
-        if (!pTemp)
-            return false;
-
-        pTemp = (char*)pTemp + (uint32_t)(layerOffset.back());
-
-        status = WriteProcessMemory(hGame, (void*)pTemp, &num, sizeof(uint32_t), NULL);
-
-        if (!status)
-            return false;
-
-        return true;
-    }
-
-    /*
-
-    Routine Description:
-
-        This is routine read data from multi-level offset pointers
-
-    Arguments:
-
-        lpBase - Modify module base address.
-        num - Data stored after reading.
-        offset - The offset array address of each level pointer relative to the base address of the module.
-        offsetMaxIndex - The offset array max index.
-
-    ReturnValue:
-
-        NTSTATUS - Status of operation.
-
-*/
-    boolean ModuleContext::ReadMultiLevelMemory32(uint32_t* pOutputNum, std::vector<uint32_t> layerOffset)
-    {
-        char* pTemp = (char*)lpModuleAddress;
-
-        for (ULONG i = 0; i < layerOffset.size(); i++)
-        {
-            pTemp = (char*)pTemp + (uint32_t)(layerOffset[i]);
-            ReadProcessMemory(hGame, (void*)pTemp, &pTemp, sizeof(uint32_t), NULL);
-        }
-
-        *pOutputNum = (uint32_t)pTemp;
-
-        if (!pTemp)
-            return false;
-        return true;
-    }
-
-    boolean ModuleContext::ReadMultiLevelMemory32float(float* pOutputNum, std::vector<uint32_t> layerOffset)
-    {
-        char* pTemp = (char*)lpModuleAddress;
-
-        for (ULONG i = 0; i < layerOffset.size(); i++)
-        {
-            pTemp = (char*)pTemp + (uint32_t)(layerOffset[i]);
-            ReadProcessMemory(hGame, (void*)pTemp, &pTemp, sizeof(uint32_t), NULL);
-        }
-
-        *pOutputNum = *(float*)&pTemp;
-
-        if (!pTemp)
-            return false;
-        return true;
-    }
-
     /*
 
     Routine Description:
@@ -188,11 +65,9 @@ namespace game {
     Arguments:
 
         lpTargetInjuctAddress - Address that will be injuct shellcode.
-        injuctcode - Data address of shellcode.
-        injuctcodelength - Sizeof shellcode that will be injuct.
-        injuctcodeWriteOrNot - Whether the shellcode is written in the head of the application address applied to the target process.
+        inJuctCode - Data address of shellcode.
+        inJuctCodeWriteOrNot - Whether the shellcode is written in the head of the application address applied to the target process.
         sourcecode - Data address of sourcecode that will be overwrite.
-        sourcecodelength - Sizeof sourcecode that will be write.
         sourcecodeWriteOrNot - Whether the sourcecode is written in the after shellcode.
 
     ReturnValue:
@@ -200,21 +75,21 @@ namespace game {
         NTSTATUS - Status of operation.
 
 */
-    boolean ModuleContext::AssemblyInject32(
+    bool ModuleContext::AssemblyInject32(
         void* lpTargetInjuctAddress,
-        std::vector<byte> InjuctCode,
-        boolean InjuctCodeWriteOrNot,
-        std::vector<byte> SourceCode,
-        boolean SourceCodeWriteOrNot
+        std::vector<byte> inJuctCode,
+        bool inJuctCodeWriteOrNot,
+        std::vector<byte> sourceCode,
+        bool sourceCodeWriteOrNot
     )
     {
-        boolean status = TRUE;
+        bool status = TRUE;
 
         char* pRemoteBuffer = NULL;
 
         BYTE JmpCode[] = "\x68\x44\x33\x22\x11\xC3";
 
-        if (SourceCode.size() < 0x100)
+        if (sourceCode.size() < 0x100)
             pRemoteBuffer = (char*)VirtualAllocEx(hGame,
                 NULL,
                 0x100,
@@ -232,36 +107,36 @@ namespace game {
         if (!pRemoteBuffer)
             return false;
 
-        if (InjuctCodeWriteOrNot)
+        if (inJuctCodeWriteOrNot)
         {
             status = WriteProcessMemory(
                 hGame,
                 pRemoteBuffer,
-                byteVectorToString(InjuctCode).c_str(),
-                InjuctCode.size(),
+                byteVectorToString(inJuctCode).c_str(),
+                inJuctCode.size(),
                 NULL);
 
             if (!status)
                 return false;
         }
 
-        if (SourceCodeWriteOrNot)
+        if (sourceCodeWriteOrNot)
         {
             status = WriteProcessMemory(
                 hGame,
-                (PUCHAR)pRemoteBuffer + (InjuctCodeWriteOrNot ? InjuctCode.size() : 0),
-                byteVectorToString(SourceCode).c_str(),
-                SourceCode.size(),
+                (PUCHAR)pRemoteBuffer + (inJuctCodeWriteOrNot ? inJuctCode.size() : 0),
+                byteVectorToString(sourceCode).c_str(),
+                sourceCode.size(),
                 NULL);
 
             if (!status)
                 return false;
         }
 
-        *(PDWORD)(JmpCode + 1) = (DWORD)lpTargetInjuctAddress + SourceCode.size();
+        *(PDWORD)(JmpCode + 1) = (DWORD)lpTargetInjuctAddress + sourceCode.size();
 
         status = WriteProcessMemory(hGame,
-            (PUCHAR)pRemoteBuffer + (InjuctCodeWriteOrNot ? InjuctCode.size() : 0) + (SourceCodeWriteOrNot ? SourceCode.size() : 0),
+            (PUCHAR)pRemoteBuffer + (inJuctCodeWriteOrNot ? inJuctCode.size() : 0) + (sourceCodeWriteOrNot ? sourceCode.size() : 0),
             JmpCode,
             sizeof(JmpCode) - 1,
             NULL
@@ -288,22 +163,18 @@ namespace game {
     /*
 
     Routine Description:
-
         This is routine start up remote thread in target process.
 
     Arguments:
-
         shellcode - The shellocde that will execute in remote thread.
-        shellcodelength - Size of shellcode.
 
     ReturnValue:
-
-        boolean - Status of operation.
+        bool - Status of operation.
 
 */
-    boolean ModuleContext::RemoteThreadExecuteShellCode(std::vector<byte> shellcode)
+    bool ModuleContext::RemoteThreadExecuteShellCode(std::vector<byte> shellCode)
     {
-        boolean status = TRUE;
+        bool status = TRUE;
         char* pRemoteBuffer = NULL, * pRemoteThreadParam = NULL;
 
         byte initparam[0x100] = { 0 };
@@ -341,8 +212,8 @@ namespace game {
         status = WriteProcessMemory(
             hGame,
             (void*)pRemoteBuffer,
-            byteVectorToString(shellcode).c_str(),
-            shellcode.size(),
+            byteVectorToString(shellCode).c_str(),
+            shellCode.size(),
             NULL);
 
         if (!status)
@@ -364,9 +235,9 @@ namespace game {
     }
 
 
-    ModuleContext::ModuleContext(std::wstring ModuleName, uint32_t pid, HANDLE hGame) : GamePid(pid), hGame(hGame)
+    ModuleContext::ModuleContext(std::wstring moduleName, uint32_t pid, HANDLE hGame) : GamePid(pid), hGame(hGame)
     {
-        lpModuleAddress = GetModuleBaseAddress(ModuleName);
+        lpModuleAddress = GetModuleBaseAddress(moduleName);
         if (!lpModuleAddress)
         {
             DebugPrint(__FUNCTIONW__, L"Get module base address failed!\n");
@@ -382,29 +253,22 @@ namespace game {
     /*
 
         Routine Description:
-
             Evevate process privileges before modifying other process.
 
         Arguments:
-
             None
 
         ReturnValue:
-
             Status - Status of operation
 
     */
-    boolean GameContext::elevateprivileges()
+    bool GameContext::elevateprivileges()
     {
 
-        BOOLEAN status = TRUE;
-
+        bool status = TRUE;
         HANDLE    hToken = NULL;
-
         LUID    luid = { 0 };
-
         TOKEN_PRIVILEGES    tp = { 0 };
-
         status = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken);
 
         if (!status)
@@ -433,35 +297,27 @@ namespace game {
         }
 
         CloseHandle(hToken);
-
         return true;
     }
 
     /*
 
     Routine Description:
-
         This Routine get process ID by process name.
 
     Arguments:
-
-        szGaName - Supplies the process that you want to get PID full name wide string .
+        GameName - Supplies the process that you want to get PID full name wide string .
 
     Return Value:
-
         Return target process ID that you want to get to if all routines implement successfully.
 
-*/
-    uint32_t GameContext::GetProcessPID(std::wstring GameName)
+    */
+    uint32_t GameContext::GetProcessPID(std::wstring gameName)
     {
         DWORD status = TRUE;
-
         HANDLE hProcessSnap = INVALID_HANDLE_VALUE;
-
         PROCESSENTRY32* lpInfo = new PROCESSENTRY32;
-
         hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-
         lpInfo->dwSize = sizeof(PROCESSENTRY32);
 
         if (hProcessSnap == INVALID_HANDLE_VALUE)
@@ -478,7 +334,7 @@ namespace game {
 
         do
         {
-            if (wcscmp(lpInfo->szExeFile, GameName.c_str()) == 0)
+            if (wcscmp(lpInfo->szExeFile, gameName.c_str()) == 0)
             {
                 CloseHandle(hProcessSnap);
 
@@ -489,21 +345,24 @@ namespace game {
         return status;
     }
 
-    boolean GameContext::AddModule(std::wstring ModuleName, HANDLE hGame)
+    bool GameContext::AddModule(std::wstring moduleName, HANDLE hGame)
     {
-        std::unique_ptr<ModuleContext> module = std::make_unique<ModuleContext>(ModuleName, GamePid, hGame);
-        modules[ModuleName] = std::move(module);
+        std::unique_ptr<ModuleContext> module = std::make_unique<ModuleContext>(
+            moduleName,
+            gamePid,
+            hGame);
+        modules[moduleName] = std::move(module);
         return true;
     }
 
     GameContext::GameContext(std::wstring GameName)
     {
-        GamePid = GetProcessPID(GameName);
-        if (!GamePid)
+        gamePid = GetProcessPID(GameName);
+        if (!gamePid)
         {
             DebugPrint(__FUNCTIONW__, L"Get process pid failed!\n");
         }
-        hGame = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GamePid);
+        hGame = OpenProcess(PROCESS_ALL_ACCESS, FALSE, gamePid);
         AddModule(GameName, hGame);
         lpGameBaseAddress = modules[GameName]->lpModuleAddress;
     }
@@ -511,8 +370,6 @@ namespace game {
     GameContext::~GameContext()
     {
         for (auto& module : modules)
-        {
             module.second.reset();
-        }
     }
 }

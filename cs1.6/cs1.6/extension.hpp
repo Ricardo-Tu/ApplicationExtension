@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Windows.h>
 #include "cs1.6.h" 
 #include "cs1.6Dlg.h"
@@ -15,21 +15,21 @@ struct Postion {
 extern std::vector<Postion> myPostion;
 
 namespace game {
-    boolean InitAllControlsContext();
-    boolean InitEditControlContext();
-    boolean InitRadioControlContext();
+    bool InitAllControlsContext();
+    bool InitEditControlContext();
+    bool InitRadioControlContext();
     void SetMoney();
-    boolean SetMoneyTimer();
-    boolean CancelSetMoneyTimer();
+    bool SetMoneyTimer();
+    bool CancelSetMoneyTimer();
     void SetBlood();
-    boolean SetBloodTimer();
-    boolean CancelSetBloodTimer();
+    bool SetBloodTimer();
+    bool CancelSetBloodTimer();
     void SetArmor();
-    boolean SetArmorTimer();
-    boolean CancelSetArmorTimer();
+    bool SetArmorTimer();
+    bool CancelSetArmorTimer();
     void SetBullet();
-    boolean SetBulletTimer();
-    boolean CancelSetBulletTimer();
+    bool SetBulletTimer();
+    bool CancelSetBulletTimer();
     void SetInvincibility();
     void CancelInvincibility();
     void SetBuyEveryWhere();

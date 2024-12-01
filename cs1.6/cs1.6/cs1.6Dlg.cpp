@@ -14,9 +14,9 @@
 
 Ccs16Dlg* g_dialog;
 std::unique_ptr<game::GameContext> g_pGameContext;
-boolean boxperspective_thread_quit_flag;
+bool boxperspective_thread_quit_flag;
 extern uint32_t boxShowFlag = 0;
-boolean bone_flag = 0;
+bool bone_flag = 0;
 
 // CAboutDlg dialog used for App About
 

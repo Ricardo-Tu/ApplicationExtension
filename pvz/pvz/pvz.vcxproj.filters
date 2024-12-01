@@ -67,11 +67,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="pvz.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="pvz.reg" />
     <None Include="res\pvz.rc2">
       <Filter>Resource Files</Filter>

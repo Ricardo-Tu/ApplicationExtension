@@ -1,13 +1,13 @@
-
+ï»¿
 // pvzDlg.cpp : implementation file
 //
 
 #include "pch.h"
+#include "afxdialogex.h"
+#include "DlgProxy.h"
 #include "framework.h"
 #include "pvz.h"
 #include "pvzDlg.h"
-#include "DlgProxy.h"
-#include "afxdialogex.h"
 
 #include "common.h"
 #include <iostream>
@@ -20,9 +20,7 @@
 #define Q_HOT_KEY_ID 0x123
 
 CpvzDlg* g_dialog;
-
 CrackRE32* g_crack;
-
 BOOLEAN bBulletFlag = FALSE;
 LONG AllBulletFlag = FALSE;
 
@@ -51,29 +49,29 @@ VOID initBulletClass();
 class CAboutDlg : public CDialogEx
 {
 public:
-	CAboutDlg();
+    CAboutDlg();
 
-	// Dialog Data
+    // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_ABOUTBOX };
+    enum { IDD = IDD_ABOUTBOX };
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-// Implementation
+    // Implementation
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
 {
-	EnableActiveAccessibility();
+    EnableActiveAccessibility();
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+    CDialogEx::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
@@ -86,89 +84,91 @@ END_MESSAGE_MAP()
 IMPLEMENT_DYNAMIC(CpvzDlg, CDialogEx);
 
 CpvzDlg::CpvzDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_PVZ_DIALOG, pParent)
+    : CDialogEx(IDD_PVZ_DIALOG, pParent)
 {
-	EnableActiveAccessibility();
-	m_hIcon = AfxGetApp()->LoadIcon(IDI_MYICON);
-	m_pAutoProxy = nullptr;
+    EnableActiveAccessibility();
+    m_hIcon = AfxGetApp()->LoadIcon(IDI_MYICON);
+    m_pAutoProxy = nullptr;
 }
 
 CpvzDlg::~CpvzDlg()
 {
-	// If there is an automation proxy for this dialog, set
-	//  its back pointer to this dialog to null, so it knows
-	//  the dialog has been deleted.
-	if (m_pAutoProxy != nullptr)
-		m_pAutoProxy->m_pDialog = nullptr;
+    // If there is an automation proxy for this dialog, set
+    //  its back pointer to this dialog to null, so it knows
+    //  the dialog has been deleted.
+    if (m_pAutoProxy != nullptr)
+        m_pAutoProxy->m_pDialog = nullptr;
 }
 
 void CpvzDlg::DoDataExchange(CDataExchange* pDX)
 {
-	HICON hIcon = AfxGetApp()->LoadIconW(IDI_MYICON);
+    HICON hIcon = AfxGetApp()->LoadIconW(IDI_MYICON);
 
-	SetIcon(hIcon, FALSE);
+    SetIcon(hIcon, FALSE);
 
-	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_COMBO1, cardslot_combobox);
-	DDX_Control(pDX, IDC_COMBO2, plants_comboBox);
-	DDX_Control(pDX, IDC_COMBO3, plant_row);
-	DDX_Control(pDX, IDC_COMBO4, plant_list);
-	DDX_Control(pDX, IDC_COMBO5, plants2);
-	DDX_Control(pDX, IDC_COMBO6, zombies_row);
-	DDX_Control(pDX, IDC_COMBO7, zombies_list);
-	DDX_Control(pDX, IDC_COMBO8, zombies_class);
-	DDX_Control(pDX, IDC_COMBO9, corn_bullet);
-	DDX_Control(pDX, IDC_COMBO10, BulletClass);
+    CDialogEx::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_COMBO1, cardslot_combobox);
+    DDX_Control(pDX, IDC_COMBO2, plants_comboBox);
+    DDX_Control(pDX, IDC_COMBO3, plant_row);
+    DDX_Control(pDX, IDC_COMBO4, plant_list);
+    DDX_Control(pDX, IDC_COMBO5, plants2);
+    DDX_Control(pDX, IDC_COMBO6, zombies_row);
+    DDX_Control(pDX, IDC_COMBO7, zombies_list);
+    DDX_Control(pDX, IDC_COMBO8, zombies_class);
+    DDX_Control(pDX, IDC_COMBO9, corn_bullet);
+    DDX_Control(pDX, IDC_COMBO10, BulletClass);
 }
 
 BEGIN_MESSAGE_MAP(CpvzDlg, CDialogEx)
-	ON_WM_SYSCOMMAND()
-	ON_WM_CLOSE()
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
-	ON_MESSAGE(WM_HOTKEY, &CpvzDlg::OnHotKey)
-	ON_BN_CLICKED(IDC_BUTTON1, &CpvzDlg::OnBnClickedButton1)
-	ON_EN_CHANGE(IDC_EDIT1, &CpvzDlg::OnEnChangeEdit1)
-	ON_BN_CLICKED(IDC_CHECK1, &CpvzDlg::OnBnClickedCheck1)
-	ON_BN_CLICKED(IDC_BUTTON2, &CpvzDlg::OnBnClickedButton2)
-	ON_BN_CLICKED(IDC_CHECK2, &CpvzDlg::OnBnClickedCheck2)
-	ON_BN_CLICKED(IDC_CHECK3, &CpvzDlg::OnBnClickedCheck3)
-	ON_BN_CLICKED(IDC_CHECK4, &CpvzDlg::OnBnClickedCheck4)
-	ON_BN_CLICKED(IDC_CHECK5, &CpvzDlg::OnBnClickedCheck5)
-	ON_BN_CLICKED(IDC_CHECK6, &CpvzDlg::OnBnClickedCheck6)
-	ON_CBN_SELCHANGE(IDC_COMBO1, &CpvzDlg::OnCbnSelchangeCombo1)
-	ON_BN_CLICKED(IDC_BUTTON3, &CpvzDlg::OnBnClickedButton3)
-	ON_CBN_SELCHANGE(IDC_COMBO2, &CpvzDlg::OnCbnSelchangeCombo2)
-	ON_BN_CLICKED(IDC_BUTTON4, &CpvzDlg::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_CHECK7, &CpvzDlg::OnBnClickedCheck7)
-	ON_BN_CLICKED(IDC_BUTTON5, &CpvzDlg::OnBnClickedButton5)
-	ON_BN_CLICKED(IDC_CHECK8, &CpvzDlg::OnBnClickedCheck8)
-	ON_BN_CLICKED(IDC_CHECK9, &CpvzDlg::OnBnClickedCheck9)
-	ON_BN_CLICKED(IDC_BUTTON7, &CpvzDlg::OnBnClickedButton7)
-	ON_BN_CLICKED(IDC_CHECK10, &CpvzDlg::OnBnClickedCheck10)
-	ON_BN_CLICKED(IDC_CHECK11, &CpvzDlg::OnBnClickedCheck11)
-	ON_BN_CLICKED(IDC_CHECK12, &CpvzDlg::OnBnClickedCheck12)
-	ON_BN_CLICKED(IDC_CHECK13, &CpvzDlg::OnBnClickedCheck13)
-	ON_BN_CLICKED(IDC_CHECK14, &CpvzDlg::OnBnClickedCheck14)
-	ON_BN_CLICKED(IDC_BUTTON6, &CpvzDlg::OnBnClickedButton6)
-	ON_BN_CLICKED(IDC_BUTTON9, &CpvzDlg::OnBnClickedButton9)
-	ON_BN_CLICKED(IDC_CHECK15, &CpvzDlg::OnBnClickedCheck15)
-	ON_BN_CLICKED(IDC_BUTTON10, &CpvzDlg::OnBnClickedButton10)
-	ON_BN_CLICKED(IDC_CHECK16, &CpvzDlg::OnBnClickedCheck16)
-	ON_BN_CLICKED(IDC_CHECK17, &CpvzDlg::OnBnClickedCheck17)
-	ON_BN_CLICKED(IDC_CHECK18, &CpvzDlg::OnBnClickedCheck18)
-	ON_BN_CLICKED(IDC_CHECK19, &CpvzDlg::OnBnClickedCheck19)
-	ON_BN_CLICKED(IDC_CHECK20, &CpvzDlg::OnBnClickedCheck20)
-	ON_BN_CLICKED(IDC_CHECK22, &CpvzDlg::OnBnClickedCheck22)
-	ON_BN_CLICKED(IDC_CHECK21, &CpvzDlg::OnBnClickedCheck21)
-	ON_BN_CLICKED(IDC_CHECK23, &CpvzDlg::OnBnClickedCheck23)
-	ON_CBN_SELCHANGE(IDC_COMBO8, &CpvzDlg::OnCbnSelchangeCombo8)
-	ON_CBN_SELCHANGE(IDC_COMBO10, &CpvzDlg::OnCbnSelchangeCombo10)
-	ON_BN_CLICKED(IDC_BUTTON12, &CpvzDlg::OnBnClickedButton12)
-	ON_BN_CLICKED(IDC_BUTTON11, &CpvzDlg::OnBnClickedButton11)
-	ON_BN_CLICKED(IDC_BUTTON8, &CpvzDlg::OnBnClickedButton8)
-	ON_BN_CLICKED(IDC_BUTTON13, &CpvzDlg::OnBnClickedButton13)
-	ON_CBN_SELCHANGE(IDC_COMBO6, &CpvzDlg::OnCbnSelchangeCombo6)
+    ON_WM_SYSCOMMAND()
+    ON_WM_CLOSE()
+    ON_WM_PAINT()
+    ON_WM_QUERYDRAGICON()
+    ON_MESSAGE(WM_HOTKEY, &CpvzDlg::OnHotKey)
+    ON_BN_CLICKED(IDC_BUTTON1, &CpvzDlg::OnBnClickedButton1)
+    ON_EN_CHANGE(IDC_EDIT1, &CpvzDlg::OnEnChangeEdit1)
+    ON_BN_CLICKED(IDC_CHECK1, &CpvzDlg::OnBnClickedCheck1)
+    ON_BN_CLICKED(IDC_BUTTON2, &CpvzDlg::OnBnClickedButton2)
+    ON_BN_CLICKED(IDC_CHECK2, &CpvzDlg::OnBnClickedCheck2)
+    ON_BN_CLICKED(IDC_CHECK3, &CpvzDlg::OnBnClickedCheck3)
+    ON_BN_CLICKED(IDC_CHECK4, &CpvzDlg::OnBnClickedCheck4)
+    ON_BN_CLICKED(IDC_CHECK5, &CpvzDlg::OnBnClickedCheck5)
+    ON_BN_CLICKED(IDC_CHECK6, &CpvzDlg::OnBnClickedCheck6)
+    ON_CBN_SELCHANGE(IDC_COMBO1, &CpvzDlg::OnCbnSelchangeCombo1)
+    ON_BN_CLICKED(IDC_BUTTON3, &CpvzDlg::OnBnClickedButton3)
+    ON_CBN_SELCHANGE(IDC_COMBO2, &CpvzDlg::OnCbnSelchangeCombo2)
+    ON_BN_CLICKED(IDC_BUTTON4, &CpvzDlg::OnBnClickedButton4)
+    ON_BN_CLICKED(IDC_CHECK7, &CpvzDlg::OnBnClickedCheck7)
+    ON_BN_CLICKED(IDC_BUTTON5, &CpvzDlg::OnBnClickedButton5)
+    ON_BN_CLICKED(IDC_CHECK8, &CpvzDlg::OnBnClickedCheck8)
+    ON_BN_CLICKED(IDC_CHECK9, &CpvzDlg::OnBnClickedCheck9)
+    ON_BN_CLICKED(IDC_BUTTON7, &CpvzDlg::OnBnClickedButton7)
+    ON_BN_CLICKED(IDC_CHECK10, &CpvzDlg::OnBnClickedCheck10)
+    ON_BN_CLICKED(IDC_CHECK11, &CpvzDlg::OnBnClickedCheck11)
+    ON_BN_CLICKED(IDC_CHECK12, &CpvzDlg::OnBnClickedCheck12)
+    ON_BN_CLICKED(IDC_CHECK13, &CpvzDlg::OnBnClickedCheck13)
+    ON_BN_CLICKED(IDC_CHECK14, &CpvzDlg::OnBnClickedCheck14)
+    ON_BN_CLICKED(IDC_BUTTON6, &CpvzDlg::OnBnClickedButton6)
+    ON_BN_CLICKED(IDC_BUTTON9, &CpvzDlg::OnBnClickedButton9)
+    ON_BN_CLICKED(IDC_CHECK15, &CpvzDlg::OnBnClickedCheck15)
+    ON_BN_CLICKED(IDC_BUTTON10, &CpvzDlg::OnBnClickedButton10)
+    ON_BN_CLICKED(IDC_CHECK16, &CpvzDlg::OnBnClickedCheck16)
+    ON_BN_CLICKED(IDC_CHECK17, &CpvzDlg::OnBnClickedCheck17)
+    ON_BN_CLICKED(IDC_CHECK18, &CpvzDlg::OnBnClickedCheck18)
+    ON_BN_CLICKED(IDC_CHECK19, &CpvzDlg::OnBnClickedCheck19)
+    ON_BN_CLICKED(IDC_CHECK20, &CpvzDlg::OnBnClickedCheck20)
+    ON_BN_CLICKED(IDC_CHECK22, &CpvzDlg::OnBnClickedCheck22)
+    ON_BN_CLICKED(IDC_CHECK21, &CpvzDlg::OnBnClickedCheck21)
+    ON_BN_CLICKED(IDC_CHECK23, &CpvzDlg::OnBnClickedCheck23)
+    ON_CBN_SELCHANGE(IDC_COMBO8, &CpvzDlg::OnCbnSelchangeCombo8)
+    ON_CBN_SELCHANGE(IDC_COMBO10, &CpvzDlg::OnCbnSelchangeCombo10)
+    ON_BN_CLICKED(IDC_BUTTON12, &CpvzDlg::OnBnClickedButton12)
+    ON_BN_CLICKED(IDC_BUTTON11, &CpvzDlg::OnBnClickedButton11)
+    ON_BN_CLICKED(IDC_BUTTON8, &CpvzDlg::OnBnClickedButton8)
+    ON_BN_CLICKED(IDC_BUTTON13, &CpvzDlg::OnBnClickedButton13)
+    ON_CBN_SELCHANGE(IDC_COMBO6, &CpvzDlg::OnCbnSelchangeCombo6)
+    ON_BN_CLICKED(IDC_CHECK24, &CpvzDlg::OnBnClickedCheck24)
+    ON_BN_CLICKED(IDC_CHECK25, &CpvzDlg::OnBnClickedCheck25)
 END_MESSAGE_MAP()
 
 
@@ -176,81 +176,81 @@ END_MESSAGE_MAP()
 
 BOOL CpvzDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+    CDialogEx::OnInitDialog();
 
-	// Add "About..." menu item to system menu.
+    // Add "About..." menu item to system menu.
 
-	// IDM_ABOUTBOX must be in the system command range.
-	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-	ASSERT(IDM_ABOUTBOX < 0xF000);
+    // IDM_ABOUTBOX must be in the system command range.
+    ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+    ASSERT(IDM_ABOUTBOX < 0xF000);
 
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != nullptr)
-	{
-		BOOL bNameValid;
-		CString strAboutMenu;
-		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
-		ASSERT(bNameValid);
-		if (!strAboutMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
-			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-		}
-	}
+    CMenu* pSysMenu = GetSystemMenu(FALSE);
+    if (pSysMenu != nullptr)
+    {
+        BOOL bNameValid;
+        CString strAboutMenu;
+        bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
+        ASSERT(bNameValid);
+        if (!strAboutMenu.IsEmpty())
+        {
+            pSysMenu->AppendMenu(MF_SEPARATOR);
+            pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+        }
+    }
 
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
+    // Set the icon for this dialog.  The framework does this automatically
+    //  when the application's main window is not a dialog
+    SetIcon(m_hIcon, TRUE);            // Set big icon
+    SetIcon(m_hIcon, FALSE);        // Set small icon
 
-	//ShowWindow(SW_MAXIMIZE);
+    //ShowWindow(SW_MAXIMIZE);
 
-	ShowWindow(SW_MINIMIZE);
+    ShowWindow(SW_MINIMIZE);
 
-	// TODO: Add extra initialization here
-	CString szEditString;
+    // TODO: Add extra initialization here
+    CString szEditString;
 
-	g_dialog = this;
+    g_dialog = this;
 
-	g_crack = new CrackRE32(L"PlantsVsZombies.exe");
+    g_crack = new CrackRE32(L"PlantsVsZombies.exe");
 
-	szEditString.Format(L"8000");
+    szEditString.Format(L"8000");
 
-	this->GetDlgItem(IDC_EDIT1)->SetWindowTextW(szEditString);
+    this->GetDlgItem(IDC_EDIT1)->SetWindowTextW(szEditString);
 
-	this->GetDlgItem(IDC_EDIT3)->SetWindowTextW(szEditString);
+    this->GetDlgItem(IDC_EDIT3)->SetWindowTextW(szEditString);
 
-	// Init card slot plant modify combo box.
-	initCardSlot_comboBox();
-	initPlants_comboBox();
+    // Init card slot plant modify combo box.
+    initCardSlot_comboBox();
+    initPlants_comboBox();
 
-	// Init plant combo box.
-	initPlantRow();
-	initPlantList();
-	initPlant2();
+    // Init plant combo box.
+    initPlantRow();
+    initPlantList();
+    initPlant2();
 
-	// Init zombies combo box.
-	initZombiesRow();
-	initZombiesList();
-	initZembies();
+    // Init zombies combo box.
+    initZombiesRow();
+    initZombiesList();
+    initZembies();
 
-	initCornBullet();
-	initBulletClass();
+    initCornBullet();
+    initBulletClass();
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 void CpvzDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
-	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
-	{
-		CAboutDlg dlgAbout;
-		dlgAbout.DoModal();
-	}
-	else
-	{
-		CDialogEx::OnSysCommand(nID, lParam);
-	}
+    if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+    {
+        CAboutDlg dlgAbout;
+        dlgAbout.DoModal();
+    }
+    else
+    {
+        CDialogEx::OnSysCommand(nID, lParam);
+    }
 }
 
 // If you add a minimize button to your dialog, you will need the code below
@@ -259,34 +259,34 @@ void CpvzDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void CpvzDlg::OnPaint()
 {
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
+    if (IsIconic())
+    {
+        CPaintDC dc(this); // device context for painting
 
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+        SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
+        // Center icon in client rectangle
+        int cxIcon = GetSystemMetrics(SM_CXICON);
+        int cyIcon = GetSystemMetrics(SM_CYICON);
+        CRect rect;
+        GetClientRect(&rect);
+        int x = (rect.Width() - cxIcon + 1) / 2;
+        int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialogEx::OnPaint();
-	}
+        // Draw the icon
+        dc.DrawIcon(x, y, m_hIcon);
+    }
+    else
+    {
+        CDialogEx::OnPaint();
+    }
 }
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
 HCURSOR CpvzDlg::OnQueryDragIcon()
 {
-	return static_cast<HCURSOR>(m_hIcon);
+    return static_cast<HCURSOR>(m_hIcon);
 }
 
 // Automation servers should not exit when a user closes the UI
@@ -297,112 +297,120 @@ HCURSOR CpvzDlg::OnQueryDragIcon()
 
 void CpvzDlg::OnClose()
 {
-	if (CanExit())
-		CDialogEx::OnClose();
+    if (CanExit())
+        CDialogEx::OnClose();
 }
 
 void CpvzDlg::OnOK()
 {
-	if (CanExit())
-		CDialogEx::OnOK();
+    if (CanExit())
+        CDialogEx::OnOK();
 }
 
 void CpvzDlg::OnCancel()
 {
-	if (CanExit())
-		CDialogEx::OnCancel();
+    if (CanExit())
+        CDialogEx::OnCancel();
 }
 
 BOOL CpvzDlg::CanExit()
 {
-	// If the proxy object is still around, then the automation
-	//  controller is still holding on to this application.  Leave
-	//  the dialog around, but hide its UI.
-	if (m_pAutoProxy != nullptr)
-	{
-		ShowWindow(SW_HIDE);
-		return FALSE;
-	}
+    // If the proxy object is still around, then the automation
+    //  controller is still holding on to this application.  Leave
+    //  the dialog around, but hide its UI.
+    if (m_pAutoProxy != nullptr)
+    {
+        ShowWindow(SW_HIDE);
+        return FALSE;
+    }
 
-	return TRUE;
+    return TRUE;
 }
 
 
 
 void CpvzDlg::OnBnClickedButton1()
 {
-	// TODO: Add your control notification handler code here
-	ModifySunShine();
+    // TODO: Add your control notification handler code here
+    ModifySunShine();
 }
 
 
 void CpvzDlg::OnEnChangeEdit1()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
+    // TODO:  If this is a RICHEDIT control, the control will not
+    // send this notification unless you override the CDialogEx::OnInitDialog()
+    // function and call CRichEditCtrl().SetEventMask()
+    // with the ENM_CHANGE flag ORed into the mask.
 
-	// TODO:  Add your control notification handler code here
+    // TODO:  Add your control notification handler code here
 }
 
 
 void CpvzDlg::OnBnClickedCheck1()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck();
-	if (status)
-		LockSunShine();
-	else
-		RecoverLockSunShineShineOriginalCode();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck();
+    if (status)
+        LockSunShine();
+    else
+        RecoverLockSunShineShineOriginalCode();
 }
 
 
 void CpvzDlg::OnBnClickedButton2()
 {
-	// TODO: Add your control notification handler code here
-	if (!g_crack->InitGameInformation(L"PlantsVsZombies.exe"))
-	{
-		std::cout << "Init game information failed!" << std::endl;
-		AfxMessageBox(L"Refresh game information failed!\n");
-	}
+    // TODO: Add your control notification handler code here
+    if (!g_crack->InitGameInformation(L"PlantsVsZombies.exe"))
+    {
+        CString szEditString;
+        szEditString.Format(L"Init game information failed!\n");
+        this->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
+        AfxMessageBox(L"Refresh game information failed!\n");
+    }
+    else
+    {
+        CString szEditString;
+        szEditString.Format(L"Init game information success!\n");
+        this->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
+    }
 }
 
 
 void CpvzDlg::OnBnClickedCheck2()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK2))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK2))->GetCheck();
 
-	if (status)
-		DecreaseCardCooldown();
-	else
-		RecoverCardCooldownSourceCode();
+    if (status)
+        DecreaseCardCooldown();
+    else
+        RecoverCardCooldownSourceCode();
 
 }
 
 
 void CpvzDlg::OnBnClickedCheck3()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK3))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK3))->GetCheck();
 
-	if (status)
-		NoCardCooldown();
-	else
-		CancelNoCardCooldown();
+    if (status)
+        NoCardCooldown();
+    else
+        CancelNoCardCooldown();
 }
 
 
 void CpvzDlg::OnBnClickedCheck4()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK4))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK4))->GetCheck();
 
-	if (status)
-		AutomaticallyCollectionSunShine();
-	else
-		RecoverAutomaticallyCollectionSunShine();
+    if (status)
+        AutomaticallyCollectionSunShine();
+    else
+        RecoverAutomaticallyCollectionSunShine();
 
 }
 
@@ -411,794 +419,838 @@ void CpvzDlg::OnBnClickedCheck4()
 
 void CpvzDlg::OnBnClickedCheck5()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK5))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK5))->GetCheck();
 
-	if (status)
-		Stregthenbullet();
-	else
-		RecoverStrengthenbullet();
+    if (status)
+        Stregthenbullet();
+    else
+        RecoverStrengthenbullet();
 
 }
 
 
 void CpvzDlg::OnBnClickedCheck6()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK6))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK6))->GetCheck();
 
-	if (status)
-		BTBullet();
-	else
-		RecoverBTBullet();
+    if (status)
+        BTBullet();
+    else
+        RecoverBTBullet();
 
 }
 
 VOID initCardSlot_comboBox()
 {
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û0");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û1");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û2");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û3");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û4");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½0");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½1");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½2");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½3");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½4");
 
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û5");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û6");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û7");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û8");
-	g_dialog->cardslot_combobox.AddString(L"¿¨²Û9");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½5");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½6");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½7");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½8");
+    g_dialog->cardslot_combobox.AddString(L"å¡æ§½9");
 }
 
 VOID initPlants_comboBox()
 {
-	// 0
-	g_dialog->plants_comboBox.AddString(L"Íã¶¹ÉäÊÖ");
-	g_dialog->plants_comboBox.AddString(L"ÏòÈÕ¿û");
-	g_dialog->plants_comboBox.AddString(L"Ó£ÌÒÕ¨µ¯");
-	g_dialog->plants_comboBox.AddString(L"¼á¹ûÇ½");
-	g_dialog->plants_comboBox.AddString(L"ÍÁ¶¹À×");
-	g_dialog->plants_comboBox.AddString(L"º®±ùÉäÊÖ");
-	g_dialog->plants_comboBox.AddString(L"´ó×ì»¨");
-	g_dialog->plants_comboBox.AddString(L"Ë«·¢ÉäÊÖ");
+    // 0
+    g_dialog->plants_comboBox.AddString(L"è±Œè±†å°„æ‰‹");
+    g_dialog->plants_comboBox.AddString(L"å‘æ—¥è‘µ");
+    g_dialog->plants_comboBox.AddString(L"æ¨±æ¡ƒç‚¸å¼¹");
+    g_dialog->plants_comboBox.AddString(L"åšæžœå¢™");
+    g_dialog->plants_comboBox.AddString(L"åœŸè±†é›·");
+    g_dialog->plants_comboBox.AddString(L"å¯’å†°å°„æ‰‹");
+    g_dialog->plants_comboBox.AddString(L"å¤§å˜´èŠ±");
+    g_dialog->plants_comboBox.AddString(L"åŒå‘å°„æ‰‹");
 
-	// 8 
-	g_dialog->plants_comboBox.AddString(L"Ð¡Åç¹½");
-	g_dialog->plants_comboBox.AddString(L"Ñô¹â¹½");
-	g_dialog->plants_comboBox.AddString(L"´óÅç¹½");
-	g_dialog->plants_comboBox.AddString(L"Ä¹±®ÍÌÊÉÕß");
-	g_dialog->plants_comboBox.AddString(L"÷È»ó¹½");
-	g_dialog->plants_comboBox.AddString(L"µ¨Ð¡¹½");
-	g_dialog->plants_comboBox.AddString(L"º®±ù¹½");
-	g_dialog->plants_comboBox.AddString(L"»ÙÃð¹½");
+    // 8 
+    g_dialog->plants_comboBox.AddString(L"å°å–·è‡");
+    g_dialog->plants_comboBox.AddString(L"é˜³å…‰è‡");
+    g_dialog->plants_comboBox.AddString(L"å¤§å–·è‡");
+    g_dialog->plants_comboBox.AddString(L"å¢“ç¢‘åžå™¬è€…");
+    g_dialog->plants_comboBox.AddString(L"é­…æƒ‘è‡");
+    g_dialog->plants_comboBox.AddString(L"èƒ†å°è‡");
+    g_dialog->plants_comboBox.AddString(L"å¯’å†°è‡");
+    g_dialog->plants_comboBox.AddString(L"æ¯ç­è‡");
 
-	// 16
-	g_dialog->plants_comboBox.AddString(L"Ë¯Á«");
-	g_dialog->plants_comboBox.AddString(L"ÎÑ¹Ï");
-	g_dialog->plants_comboBox.AddString(L"ÈýÏßÉäÊÖ");
-	g_dialog->plants_comboBox.AddString(L"²øÈÆº£²Ý");
-	g_dialog->plants_comboBox.AddString(L"»ð±¬À±½·");
-	g_dialog->plants_comboBox.AddString(L"µØ´Ì");
-	g_dialog->plants_comboBox.AddString(L"»ð¾æÊ÷×®");
-	g_dialog->plants_comboBox.AddString(L"¸ß¼á¹û");
+    // 16
+    g_dialog->plants_comboBox.AddString(L"ç¡èŽ²");
+    g_dialog->plants_comboBox.AddString(L"çªç“œ");
+    g_dialog->plants_comboBox.AddString(L"ä¸‰çº¿å°„æ‰‹");
+    g_dialog->plants_comboBox.AddString(L"ç¼ ç»•æµ·è‰");
+    g_dialog->plants_comboBox.AddString(L"ç«çˆ†è¾£æ¤’");
+    g_dialog->plants_comboBox.AddString(L"åœ°åˆº");
+    g_dialog->plants_comboBox.AddString(L"ç«ç‚¬æ ‘æ¡©");
+    g_dialog->plants_comboBox.AddString(L"é«˜åšæžœ");
 
-	// 24
-	g_dialog->plants_comboBox.AddString(L"º£Ä¢¹½");
-	g_dialog->plants_comboBox.AddString(L"Â·µÆ»¨");
-	g_dialog->plants_comboBox.AddString(L"ÏÉÈËÕÆ");
-	g_dialog->plants_comboBox.AddString(L"ÈýÒ¶²Ý");
-	g_dialog->plants_comboBox.AddString(L"ÁÑ¼ÔÉäÊÖ");
-	g_dialog->plants_comboBox.AddString(L"ÑîÌÒ");
-	g_dialog->plants_comboBox.AddString(L"ÄÏ¹ÏÍ·");
-	g_dialog->plants_comboBox.AddString(L"´ÅÁ¦¹½");
+    // 24
+    g_dialog->plants_comboBox.AddString(L"æµ·è˜‘è‡");
+    g_dialog->plants_comboBox.AddString(L"è·¯ç¯èŠ±");
+    g_dialog->plants_comboBox.AddString(L"ä»™äººæŽŒ");
+    g_dialog->plants_comboBox.AddString(L"ä¸‰å¶è‰");
+    g_dialog->plants_comboBox.AddString(L"è£‚èšå°„æ‰‹");
+    g_dialog->plants_comboBox.AddString(L"æ¨æ¡ƒ");
+    g_dialog->plants_comboBox.AddString(L"å—ç“œå¤´");
+    g_dialog->plants_comboBox.AddString(L"ç£åŠ›è‡");
 
-	// 32
-	g_dialog->plants_comboBox.AddString(L"¾íÐÄ²ËÍ¶ÊÖ");
-	g_dialog->plants_comboBox.AddString(L"»¨Åè");
-	g_dialog->plants_comboBox.AddString(L"ÓñÃ×Í¶ÊÖ");
-	g_dialog->plants_comboBox.AddString(L"¿§·È¶¹");
-	g_dialog->plants_comboBox.AddString(L"´óËâ");
-	g_dialog->plants_comboBox.AddString(L"Ò¶×Ó±£»¤É¡");
-	g_dialog->plants_comboBox.AddString(L"½ðÕµ»¨");
-	g_dialog->plants_comboBox.AddString(L"Î÷¹ÏÍ¶ÊÖ");
+    // 32
+    g_dialog->plants_comboBox.AddString(L"å·å¿ƒèœæŠ•æ‰‹");
+    g_dialog->plants_comboBox.AddString(L"èŠ±ç›†");
+    g_dialog->plants_comboBox.AddString(L"çŽ‰ç±³æŠ•æ‰‹");
+    g_dialog->plants_comboBox.AddString(L"å’–å•¡è±†");
+    g_dialog->plants_comboBox.AddString(L"å¤§è’œ");
+    g_dialog->plants_comboBox.AddString(L"å¶å­ä¿æŠ¤ä¼ž");
+    g_dialog->plants_comboBox.AddString(L"é‡‘ç›èŠ±");
+    g_dialog->plants_comboBox.AddString(L"è¥¿ç“œæŠ•æ‰‹");
 
-	// 40
-	g_dialog->plants_comboBox.AddString(L"»úÇ¹ÉäÊÖ");
-	g_dialog->plants_comboBox.AddString(L"Ë«×ÓÏòÈÕ¿û");
-	g_dialog->plants_comboBox.AddString(L"ÓÇÓôÄ¢¹½");
-	g_dialog->plants_comboBox.AddString(L"ÏãÆÑ");
-	g_dialog->plants_comboBox.AddString(L"±ù¹Ï");
-	g_dialog->plants_comboBox.AddString(L"Îü½ð´Å");
-	g_dialog->plants_comboBox.AddString(L"µØ´ÌÍõ");
-	g_dialog->plants_comboBox.AddString(L"ÓñÃ×¼ÓÅ©ÅÚ");
+    // 40
+    g_dialog->plants_comboBox.AddString(L"æœºæžªå°„æ‰‹");
+    g_dialog->plants_comboBox.AddString(L"åŒå­å‘æ—¥è‘µ");
+    g_dialog->plants_comboBox.AddString(L"å¿§éƒè˜‘è‡");
+    g_dialog->plants_comboBox.AddString(L"é¦™è’²");
+    g_dialog->plants_comboBox.AddString(L"å†°ç“œ");
+    g_dialog->plants_comboBox.AddString(L"å¸é‡‘ç£");
+    g_dialog->plants_comboBox.AddString(L"åœ°åˆºçŽ‹");
+    g_dialog->plants_comboBox.AddString(L"çŽ‰ç±³åŠ å†œç‚®");
 
-	// 48
-	g_dialog->plants_comboBox.AddString(L"Ä£·ÂÕß");
-	g_dialog->plants_comboBox.AddString(L"±¬Õ¨¼á¹û");
-	g_dialog->plants_comboBox.AddString(L"´ó¼á¹û±£ÁäÇò");
-	g_dialog->plants_comboBox.AddString(L"ÖÖ×ÓÑ¿");
-	g_dialog->plants_comboBox.AddString(L"·´ÏòË«·¢ÉäÊÖ");
+    // 48
+    g_dialog->plants_comboBox.AddString(L"æ¨¡ä»¿è€…");
+    g_dialog->plants_comboBox.AddString(L"çˆ†ç‚¸åšæžœ");
+    g_dialog->plants_comboBox.AddString(L"å¤§åšæžœä¿é¾„çƒ");
+    g_dialog->plants_comboBox.AddString(L"ç§å­èŠ½");
+    g_dialog->plants_comboBox.AddString(L"åå‘åŒå‘å°„æ‰‹");
 }
 
 
 VOID initPlantRow()
 {
-	g_dialog->plant_row.AddString(L"µÚ0ÐÐ");
-	g_dialog->plant_row.AddString(L"µÚ1ÐÐ");
-	g_dialog->plant_row.AddString(L"µÚ2ÐÐ");
-	g_dialog->plant_row.AddString(L"µÚ3ÐÐ");
-	g_dialog->plant_row.AddString(L"µÚ4ÐÐ");
-	g_dialog->plant_row.AddString(L"µÚ5ÐÐ");
+    g_dialog->plant_row.AddString(L"ç¬¬0è¡Œ");
+    g_dialog->plant_row.AddString(L"ç¬¬1è¡Œ");
+    g_dialog->plant_row.AddString(L"ç¬¬2è¡Œ");
+    g_dialog->plant_row.AddString(L"ç¬¬3è¡Œ");
+    g_dialog->plant_row.AddString(L"ç¬¬4è¡Œ");
+    g_dialog->plant_row.AddString(L"ç¬¬5è¡Œ");
 
-	g_dialog->plant_row.SetCurSel(0);
+    g_dialog->plant_row.SetCurSel(0);
 }
 
 VOID initPlantList()
 {
-	g_dialog->plant_list.AddString(L"µÚ0ÁÐ");
-	g_dialog->plant_list.AddString(L"µÚ1ÁÐ");
-	g_dialog->plant_list.AddString(L"µÚ2ÁÐ");
-	g_dialog->plant_list.AddString(L"µÚ3ÁÐ");
-	g_dialog->plant_list.AddString(L"µÚ4ÁÐ");
+    g_dialog->plant_list.AddString(L"ç¬¬0åˆ—");
+    g_dialog->plant_list.AddString(L"ç¬¬1åˆ—");
+    g_dialog->plant_list.AddString(L"ç¬¬2åˆ—");
+    g_dialog->plant_list.AddString(L"ç¬¬3åˆ—");
+    g_dialog->plant_list.AddString(L"ç¬¬4åˆ—");
 
-	g_dialog->plant_list.AddString(L"µÚ5ÁÐ");
-	g_dialog->plant_list.AddString(L"µÚ6ÁÐ");
-	g_dialog->plant_list.AddString(L"µÚ7ÁÐ");
-	g_dialog->plant_list.AddString(L"µÚ8ÁÐ");
+    g_dialog->plant_list.AddString(L"ç¬¬5åˆ—");
+    g_dialog->plant_list.AddString(L"ç¬¬6åˆ—");
+    g_dialog->plant_list.AddString(L"ç¬¬7åˆ—");
+    g_dialog->plant_list.AddString(L"ç¬¬8åˆ—");
 
-	g_dialog->plant_list.SetCurSel(0);
+    g_dialog->plant_list.SetCurSel(0);
 }
 
 VOID initPlant2()
 {
-	g_dialog->plants2.AddString(L"Íã¶¹ÉäÊÖ");
-	g_dialog->plants2.AddString(L"ÏòÈÕ¿û");
-	g_dialog->plants2.AddString(L"Ó£ÌÒÕ¨µ¯");
-	g_dialog->plants2.AddString(L"¼á¹ûÇ½");
-	g_dialog->plants2.AddString(L"ÍÁ¶¹À×");
-	g_dialog->plants2.AddString(L"º®±ùÉäÊÖ");
-	g_dialog->plants2.AddString(L"´ó×ì»¨");
-	g_dialog->plants2.AddString(L"Ë«·¢ÉäÊÖ");
+    g_dialog->plants2.AddString(L"è±Œè±†å°„æ‰‹");
+    g_dialog->plants2.AddString(L"å‘æ—¥è‘µ");
+    g_dialog->plants2.AddString(L"æ¨±æ¡ƒç‚¸å¼¹");
+    g_dialog->plants2.AddString(L"åšæžœå¢™");
+    g_dialog->plants2.AddString(L"åœŸè±†é›·");
+    g_dialog->plants2.AddString(L"å¯’å†°å°„æ‰‹");
+    g_dialog->plants2.AddString(L"å¤§å˜´èŠ±");
+    g_dialog->plants2.AddString(L"åŒå‘å°„æ‰‹");
 
-	g_dialog->plants2.AddString(L"Ð¡Åç¹½");
-	g_dialog->plants2.AddString(L"Ñô¹â¹½");
-	g_dialog->plants2.AddString(L"´óÅç¹½");
-	g_dialog->plants2.AddString(L"Ä¹±®ÍÌÊÉÕß");
-	g_dialog->plants2.AddString(L"÷È»ó¹½");
-	g_dialog->plants2.AddString(L"µ¨Ð¡¹½");
-	g_dialog->plants2.AddString(L"º®±ù¹½");
-	g_dialog->plants2.AddString(L"»ÙÃð¹½");
+    g_dialog->plants2.AddString(L"å°å–·è‡");
+    g_dialog->plants2.AddString(L"é˜³å…‰è‡");
+    g_dialog->plants2.AddString(L"å¤§å–·è‡");
+    g_dialog->plants2.AddString(L"å¢“ç¢‘åžå™¬è€…");
+    g_dialog->plants2.AddString(L"é­…æƒ‘è‡");
+    g_dialog->plants2.AddString(L"èƒ†å°è‡");
+    g_dialog->plants2.AddString(L"å¯’å†°è‡");
+    g_dialog->plants2.AddString(L"æ¯ç­è‡");
 
-	g_dialog->plants2.AddString(L"Ë¯Á«");
-	g_dialog->plants2.AddString(L"ÎÑ¹Ï");
-	g_dialog->plants2.AddString(L"ÈýÏßÉäÊÖ");
-	g_dialog->plants2.AddString(L"²øÈÆº£²Ý");
-	g_dialog->plants2.AddString(L"»ð±¬À±½·");
-	g_dialog->plants2.AddString(L"µØ´Ì");
-	g_dialog->plants2.AddString(L"»ð¾æÊ÷×®");
-	g_dialog->plants2.AddString(L"¸ß¼á¹û");
+    g_dialog->plants2.AddString(L"ç¡èŽ²");
+    g_dialog->plants2.AddString(L"çªç“œ");
+    g_dialog->plants2.AddString(L"ä¸‰çº¿å°„æ‰‹");
+    g_dialog->plants2.AddString(L"ç¼ ç»•æµ·è‰");
+    g_dialog->plants2.AddString(L"ç«çˆ†è¾£æ¤’");
+    g_dialog->plants2.AddString(L"åœ°åˆº");
+    g_dialog->plants2.AddString(L"ç«ç‚¬æ ‘æ¡©");
+    g_dialog->plants2.AddString(L"é«˜åšæžœ");
 
-	g_dialog->plants2.AddString(L"º£Ä¢¹½");
-	g_dialog->plants2.AddString(L"Â·µÆ»¨");
-	g_dialog->plants2.AddString(L"ÏÉÈËÕÆ");
-	g_dialog->plants2.AddString(L"ÈýÒ¶²Ý");
-	g_dialog->plants2.AddString(L"ÁÑ¼ÔÉäÊÖ");
-	g_dialog->plants2.AddString(L"ÑîÌÒ");
-	g_dialog->plants2.AddString(L"ÄÏ¹ÏÍ·");
-	g_dialog->plants2.AddString(L"´ÅÁ¦¹½");
+    g_dialog->plants2.AddString(L"æµ·è˜‘è‡");
+    g_dialog->plants2.AddString(L"è·¯ç¯èŠ±");
+    g_dialog->plants2.AddString(L"ä»™äººæŽŒ");
+    g_dialog->plants2.AddString(L"ä¸‰å¶è‰");
+    g_dialog->plants2.AddString(L"è£‚èšå°„æ‰‹");
+    g_dialog->plants2.AddString(L"æ¨æ¡ƒ");
+    g_dialog->plants2.AddString(L"å—ç“œå¤´");
+    g_dialog->plants2.AddString(L"ç£åŠ›è‡");
 
-	g_dialog->plants2.AddString(L"¾íÐÄ²ËÍ¶ÊÖ");
-	g_dialog->plants2.AddString(L"»¨Åè");
-	g_dialog->plants2.AddString(L"ÓñÃ×Í¶ÊÖ");
-	g_dialog->plants2.AddString(L"¿§·È¶¹");
-	g_dialog->plants2.AddString(L"´óËâ");
-	g_dialog->plants2.AddString(L"Ò¶×Ó±£»¤É¡");
-	g_dialog->plants2.AddString(L"½ðÕµ»¨");
-	g_dialog->plants2.AddString(L"Î÷¹ÏÍ¶ÊÖ");
+    g_dialog->plants2.AddString(L"å·å¿ƒèœæŠ•æ‰‹");
+    g_dialog->plants2.AddString(L"èŠ±ç›†");
+    g_dialog->plants2.AddString(L"çŽ‰ç±³æŠ•æ‰‹");
+    g_dialog->plants2.AddString(L"å’–å•¡è±†");
+    g_dialog->plants2.AddString(L"å¤§è’œ");
+    g_dialog->plants2.AddString(L"å¶å­ä¿æŠ¤ä¼ž");
+    g_dialog->plants2.AddString(L"é‡‘ç›èŠ±");
+    g_dialog->plants2.AddString(L"è¥¿ç“œæŠ•æ‰‹");
 
-	g_dialog->plants2.AddString(L"»úÇ¹ÉäÊÖ");
-	g_dialog->plants2.AddString(L"Ë«×ÓÏòÈÕ¿û");
-	g_dialog->plants2.AddString(L"ÓÇÓôÄ¢¹½");
-	g_dialog->plants2.AddString(L"ÏãÆÑ");
-	g_dialog->plants2.AddString(L"±ù¹Ï");
-	g_dialog->plants2.AddString(L"Îü½ð´Å");
-	g_dialog->plants2.AddString(L"µØ´ÌÍõ");
-	g_dialog->plants2.AddString(L"ÓñÃ×¼ÓÅ©ÅÚ");
+    g_dialog->plants2.AddString(L"æœºæžªå°„æ‰‹");
+    g_dialog->plants2.AddString(L"åŒå­å‘æ—¥è‘µ");
+    g_dialog->plants2.AddString(L"å¿§éƒè˜‘è‡");
+    g_dialog->plants2.AddString(L"é¦™è’²");
+    g_dialog->plants2.AddString(L"å†°è¥¿ç“œæŠ•æ‰‹");
+    g_dialog->plants2.AddString(L"å¸é‡‘ç£");
+    g_dialog->plants2.AddString(L"åœ°åˆºçŽ‹");
+    g_dialog->plants2.AddString(L"çŽ‰ç±³åŠ å†œç‚®");
 
-	g_dialog->plants2.AddString(L"Ä£·ÂÕß");
-	g_dialog->plants2.AddString(L"±¬Õ¨¼á¹û");
-	g_dialog->plants2.AddString(L"´ó¼á¹û±£ÁäÇò");
-	g_dialog->plants2.AddString(L"ÖÖ×ÓÑ¿");
-	g_dialog->plants2.AddString(L"·´ÏòË«·¢ÉäÊÖ");
+    g_dialog->plants2.AddString(L"æ¨¡ä»¿è€…");
+    g_dialog->plants2.AddString(L"çˆ†ç‚¸åšæžœ");
+    g_dialog->plants2.AddString(L"å¤§åšæžœä¿é¾„çƒ");
+    g_dialog->plants2.AddString(L"ç§å­èŠ½");
+    g_dialog->plants2.AddString(L"åå‘åŒå‘å°„æ‰‹");
 
-	g_dialog->plants2.SetCurSel(0);
+    g_dialog->plants2.SetCurSel(0);
 }
 
 VOID initZombiesRow()
 {
-	g_dialog->zombies_row.AddString(L"µÚ0ÐÐ");
-	g_dialog->zombies_row.AddString(L"µÚ1ÐÐ");
-	g_dialog->zombies_row.AddString(L"µÚ2ÐÐ");
-	g_dialog->zombies_row.AddString(L"µÚ3ÐÐ");
-	g_dialog->zombies_row.AddString(L"µÚ4ÐÐ");
-	g_dialog->zombies_row.AddString(L"µÚ5ÐÐ");
+    g_dialog->zombies_row.AddString(L"ç¬¬0è¡Œ");
+    g_dialog->zombies_row.AddString(L"ç¬¬1è¡Œ");
+    g_dialog->zombies_row.AddString(L"ç¬¬2è¡Œ");
+    g_dialog->zombies_row.AddString(L"ç¬¬3è¡Œ");
+    g_dialog->zombies_row.AddString(L"ç¬¬4è¡Œ");
+    g_dialog->zombies_row.AddString(L"ç¬¬5è¡Œ");
 
-	g_dialog->zombies_row.SetCurSel(0);
+    g_dialog->zombies_row.SetCurSel(0);
 }
 
 VOID initZombiesList()
 {
-	g_dialog->zombies_list.AddString(L"µÚ0ÁÐ");
-	g_dialog->zombies_list.AddString(L"µÚ1ÁÐ");
-	g_dialog->zombies_list.AddString(L"µÚ2ÁÐ");
-	g_dialog->zombies_list.AddString(L"µÚ3ÁÐ");
-	g_dialog->zombies_list.AddString(L"µÚ4ÁÐ");
+    g_dialog->zombies_list.AddString(L"ç¬¬0åˆ—");
+    g_dialog->zombies_list.AddString(L"ç¬¬1åˆ—");
+    g_dialog->zombies_list.AddString(L"ç¬¬2åˆ—");
+    g_dialog->zombies_list.AddString(L"ç¬¬3åˆ—");
+    g_dialog->zombies_list.AddString(L"ç¬¬4åˆ—");
 
-	g_dialog->zombies_list.AddString(L"µÚ5ÁÐ");
-	g_dialog->zombies_list.AddString(L"µÚ6ÁÐ");
-	g_dialog->zombies_list.AddString(L"µÚ7ÁÐ");
-	g_dialog->zombies_list.AddString(L"µÚ8ÁÐ");
+    g_dialog->zombies_list.AddString(L"ç¬¬5åˆ—");
+    g_dialog->zombies_list.AddString(L"ç¬¬6åˆ—");
+    g_dialog->zombies_list.AddString(L"ç¬¬7åˆ—");
+    g_dialog->zombies_list.AddString(L"ç¬¬8åˆ—");
 
-	g_dialog->zombies_list.SetCurSel(8);
+    g_dialog->zombies_list.SetCurSel(8);
 }
 
 VOID initZembies()
 {
-	// 0
-	g_dialog->zombies_class.AddString(L"ÆÕÍ¨½©Ê¬");
-	g_dialog->zombies_class.AddString(L"Ò¡Æì½©Ê¬");
-	g_dialog->zombies_class.AddString(L"Â·ÕÏ½©Ê¬");
-	g_dialog->zombies_class.AddString(L"³Å¸Ë½©Ê¬");
-	g_dialog->zombies_class.AddString(L"ÌúÍ°½©Ê¬");
+    // 0
+    g_dialog->zombies_class.AddString(L"æ™®é€šåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ‘‡æ——åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"è·¯éšœåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ’‘æ†åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"é“æ¡¶åƒµå°¸");
 
-	// 5
-	g_dialog->zombies_class.AddString(L"¶Á±¨½©Ê¬");
-	g_dialog->zombies_class.AddString(L"ÌúÕ¤ÃÅ½©Ê¬");
-	g_dialog->zombies_class.AddString(L"éÏé­Çò½©Ê¬");
-	g_dialog->zombies_class.AddString(L"ÎèÍõ½©Ê¬");
-	g_dialog->zombies_class.AddString(L"°éÎè½©Ê¬");
+    // 5
+    g_dialog->zombies_class.AddString(L"è¯»æŠ¥åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"é“æ …é—¨åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ©„æ¦„çƒåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"èˆžçŽ‹åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"ä¼´èˆžåƒµå°¸");
 
-	// 10
-	g_dialog->zombies_class.AddString(L"Ñ¼×Ó¾ÈÉúÈ¦½©Ê¬");
-	g_dialog->zombies_class.AddString(L"Ç±Ë®½©Ê¬");
-	g_dialog->zombies_class.AddString(L"Ñ©ÇË³µ½©Ê¬");
-	g_dialog->zombies_class.AddString(L"Ñ©ÇÁ½©Ê¬Ð¡¶Ó");
-	g_dialog->zombies_class.AddString(L"º£ëàÆïÊ¿½©Ê¬");
+    // 10
+    g_dialog->zombies_class.AddString(L"é¸­å­æ•‘ç”Ÿåœˆåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ½œæ°´åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"é›ªæ’¬è½¦åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"é›ªæ©‡åƒµå°¸å°é˜Ÿ");
+    g_dialog->zombies_class.AddString(L"æµ·è±šéª‘å£«åƒµå°¸");
 
-	// 15
-	g_dialog->zombies_class.AddString(L"ÍæÅ¼Ï»½©Ê¬");
-	g_dialog->zombies_class.AddString(L"ÆøÇò½©Ê¬");
-	g_dialog->zombies_class.AddString(L"¿ó¹¤½©Ê¬");
-	g_dialog->zombies_class.AddString(L"ÌøÌø½©Ê¬");
-	g_dialog->zombies_class.AddString(L"½©Ê¬Ñ©ÈË");
+    // 15
+    g_dialog->zombies_class.AddString(L"çŽ©å¶åŒ£åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ°”çƒåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"çŸ¿å·¥åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"è·³è·³åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"åƒµå°¸é›ªäºº");
 
-	// 20
-	g_dialog->zombies_class.AddString(L"±Ä¼«½©Ê¬");
-	g_dialog->zombies_class.AddString(L"·öÌÝ½©Ê¬");
-	g_dialog->zombies_class.AddString(L"Í¶Ê¯³µ½©Ê¬");
-	g_dialog->zombies_class.AddString(L"¾ÞÈË½©Ê¬");
-	g_dialog->zombies_class.AddString(L"Ð¡¹í½©Ê¬");
+    // 20
+    g_dialog->zombies_class.AddString(L"è¹¦æžåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ‰¶æ¢¯åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æŠ•çŸ³è½¦åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"å·¨äººåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"å°é¬¼åƒµå°¸");
 
-	// 25
-	g_dialog->zombies_class.AddString(L"½©Íõ²©Ê¿");
-	g_dialog->zombies_class.AddString(L"Íã¶¹ÉäÊÖ½©Ê¬");
-	g_dialog->zombies_class.AddString(L"¼á¹ûÇ½½©Ê¬");
-	g_dialog->zombies_class.AddString(L"»ð±¬À±½·½©Ê¬");
-	g_dialog->zombies_class.AddString(L"»úÇ¹ÉäÊÖ½©Ê¬");
+    // 25
+    g_dialog->zombies_class.AddString(L"åƒµçŽ‹åšå£«");
+    g_dialog->zombies_class.AddString(L"è±Œè±†å°„æ‰‹åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"åšæžœå¢™åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"ç«çˆ†è¾£æ¤’åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æœºæžªå°„æ‰‹åƒµå°¸");
 
-	// 30
-	g_dialog->zombies_class.AddString(L"ÎÑ¹Ï½©Ê¬");
-	g_dialog->zombies_class.AddString(L"¸ß¼á¹û½©Ê¬");
-	g_dialog->zombies_class.AddString(L"ÎÞ");
-	g_dialog->zombies_class.AddString(L"ÒþÉí½©Ê¬");
-	g_dialog->zombies_class.AddString(L"ÎÞ");
+    // 30
+    g_dialog->zombies_class.AddString(L"çªç“œåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"é«˜åšæžœåƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ— ");
+    g_dialog->zombies_class.AddString(L"éšèº«åƒµå°¸");
+    g_dialog->zombies_class.AddString(L"æ— ");
 
-	// 30
-	g_dialog->zombies_class.AddString(L"ÎÞ");
-	g_dialog->zombies_class.AddString(L"ÎÞ·öÌÝµÄ·öÌÝ½©Ê¬");
+    // 30
+    g_dialog->zombies_class.AddString(L"æ— ");
+    g_dialog->zombies_class.AddString(L"æ— æ‰¶æ¢¯çš„æ‰¶æ¢¯åƒµå°¸");
 
-	g_dialog->zombies_class.SetCurSel(0);
+    g_dialog->zombies_class.SetCurSel(0);
 }
 
 
 VOID initCornBullet()
 {
-	g_dialog->corn_bullet.AddString(L"»ÆÓÍ");
+    g_dialog->corn_bullet.AddString(L"é»„æ²¹");
 
-	g_dialog->corn_bullet.AddString(L"¼ÓÅ©ÅÚ");
+    g_dialog->corn_bullet.AddString(L"åŠ å†œç‚®");
 
-	g_dialog->corn_bullet.SetCurSel(1);
+    g_dialog->corn_bullet.SetCurSel(1);
 }
 
 
 VOID initBulletClass()
 {
-	g_dialog->BulletClass.AddString(L"×Óµ¯´©Í¸");
+    g_dialog->BulletClass.AddString(L"å­å¼¹ç©¿é€");
 
-	g_dialog->BulletClass.AddString(L"×Ô¶¯×·×Ù");
+    g_dialog->BulletClass.AddString(L"è‡ªåŠ¨è¿½è¸ª");
 
-	g_dialog->BulletClass.AddString(L"È«ÆÁ×Óµ¯");
+    g_dialog->BulletClass.AddString(L"å…¨å±å­å¼¹");
 
-	g_dialog->BulletClass.SetCurSel(0);
+    g_dialog->BulletClass.SetCurSel(0);
 }
 
 
 
 void CpvzDlg::OnCbnSelchangeCombo1()
 {
-	// TODO: Add your control notification handler code here
+    // TODO: Add your control notification handler code here
 }
 
 
 void CpvzDlg::OnBnClickedButton3()
 {
-	// TODO: Add your control notification handler code here3
-	DWORD dwcard = g_dialog->cardslot_combobox.GetCurSel();
+    // TODO: Add your control notification handler code here3
+    DWORD dwcard = g_dialog->cardslot_combobox.GetCurSel();
 
-	DWORD dwPlant = g_dialog->plants_comboBox.GetCurSel();
+    DWORD dwPlant = g_dialog->plants_comboBox.GetCurSel();
 
-	ModifyCardSlotPlant(dwcard, dwPlant);
+    ModifyCardSlotPlant(dwcard, dwPlant);
 
 }
 
 
 void CpvzDlg::OnCbnSelchangeCombo2()
 {
-	// TODO: Add your control notification handler code here
+    // TODO: Add your control notification handler code here
 }
 
 
 void CpvzDlg::OnBnClickedButton4()
 {
-	// TODO: Add your control notification handler code here
-	DWORD dwrow = g_dialog->plant_row.GetCurSel();
+    // TODO: Add your control notification handler code here
+    DWORD dwrow = g_dialog->plant_row.GetCurSel();
 
-	DWORD dwlist = g_dialog->plant_list.GetCurSel();
+    DWORD dwlist = g_dialog->plant_list.GetCurSel();
 
-	DWORD dwplant = g_dialog->plants2.GetCurSel();
+    DWORD dwplant = g_dialog->plants2.GetCurSel();
 
-	Plant(dwrow, dwlist, dwplant);
+    Plant(dwrow, dwlist, dwplant);
 
 }
 
 
 void CpvzDlg::OnBnClickedCheck7()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK7))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK7))->GetCheck();
 
-	if (status)
-		PlantOverlapping();
-	else
-		RecoverPlantOverlappint();
+    if (status)
+        PlantOverlapping();
+    else
+        RecoverPlantOverlappint();
 }
 
 
 void CpvzDlg::OnBnClickedButton5()
 {
-	// TODO: Add your control notification handler code here
-	DWORD dwrow = g_dialog->zombies_row.GetCurSel();
+    // TODO: Add your control notification handler code here
+    DWORD dwrow = g_dialog->zombies_row.GetCurSel();
 
-	DWORD dwlist = g_dialog->zombies_list.GetCurSel();
+    DWORD dwlist = g_dialog->zombies_list.GetCurSel();
 
-	DWORD dwZombies = g_dialog->zombies_class.GetCurSel();
+    DWORD dwZombies = g_dialog->zombies_class.GetCurSel();
 
-	ZombiesPlant(dwrow, dwlist, dwZombies);
+    ZombiesPlant(dwrow, dwlist, dwZombies);
 }
 
 
 void CpvzDlg::OnBnClickedCheck8()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK8))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK8))->GetCheck();
 
-	if (status)
-		PurpleDirectPlant();
-	else
-		RecoverPurpleDirectPlant();
+    if (status)
+        PurpleDirectPlant();
+    else
+        RecoverPurpleDirectPlant();
 }
 
 
 void CpvzDlg::OnBnClickedCheck9()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK9))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK9))->GetCheck();
 
-	if (status)
-		BackgroundRunGame();
-	else
-		RecoverBackgroundRunGame();
+    if (status)
+        BackgroundRunGame();
+    else
+        RecoverBackgroundRunGame();
 }
 
 
 void CpvzDlg::OnBnClickedButton7()
 {
-	// TODO: Add your control notification handler code here
+    // TODO: Add your control notification handler code here
 
 
-	KillAllZombies();
+    KillAllZombies();
 
-	Sleep(5000);
+    Sleep(5000);
 
-	RecoverKillAllZombies();
+    RecoverKillAllZombies();
 
 }
 
-// È«¾Ö¿ì½Ý¼ü
+// å…¨å±€å¿«æ·é”®
 LRESULT CpvzDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 {
-	// TODO: Add your control notification handler code here
-	UINT Mod = (UINT)LOWORD(lParam);		// key-modifier flags 
-	UINT uVirtKey = (UINT)HIWORD(lParam);   // virtual-key code 
-	DWORD32 flag = 1;
-	
-	if (uVirtKey == 0x51)
-	{
-		//AfxMessageBox(L"q accelerator!\n");
+    // TODO: Add your control notification handler code here
+    UINT Mod = (UINT)LOWORD(lParam);        // key-modifier flags 
+    UINT uVirtKey = (UINT)HIWORD(lParam);   // virtual-key code 
+    DWORD32 flag = 1;
 
-		WriteProcessMemory(g_crack->stGameInfo->hGame, (PVOID)lpkillZombiesFlagAddress, &flag, sizeof(DWORD32), NULL);
-	}
+    if (uVirtKey == 0x51)
+    {
+        //AfxMessageBox(L"q accelerator!\n");
 
-	return 0;
+        WriteProcessMemory(g_crack->stGameInfo->hGame, (PVOID)lpkillZombiesFlagAddress, &flag, sizeof(DWORD32), NULL);
+    }
+
+    return 0;
 }
 
 void CpvzDlg::OnBnClickedCheck10()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK10))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK10))->GetCheck();
 
-	if (status)
-	{
-		RegisterHotKey(AfxGetMainWnd()->GetSafeHwnd(), Q_HOT_KEY_ID, NULL, 0x51);
+    if (status)
+    {
+        RegisterHotKey(AfxGetMainWnd()->GetSafeHwnd(), Q_HOT_KEY_ID, NULL, 0x51);
 
-		KillOneZombies();
-	}
-	else
-	{
-		UnregisterHotKey(AfxGetMainWnd()->GetSafeHwnd(), Q_HOT_KEY_ID);
+        KillOneZombies();
+    }
+    else
+    {
+        UnregisterHotKey(AfxGetMainWnd()->GetSafeHwnd(), Q_HOT_KEY_ID);
 
-		RecoverKillOneZombies();
-	}
+        RecoverKillOneZombies();
+    }
 
 }
 
 
 void CpvzDlg::OnBnClickedCheck11()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK11))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK11))->GetCheck();
 
-	if (status)
-	{
-		this->GetDlgItem(IDC_BUTTON6)->EnableWindow(FALSE);
-	
-		RomdomizedBullet();
-	}
-	else
-	{
-		this->GetDlgItem(IDC_BUTTON6)->EnableWindow(TRUE);
+    if (status)
+    {
+        this->GetDlgItem(IDC_BUTTON6)->EnableWindow(FALSE);
 
-		RecoverRomdomizedBullet();
-	}
+        RomdomizedBullet();
+    }
+    else
+    {
+        this->GetDlgItem(IDC_BUTTON6)->EnableWindow(TRUE);
+
+        RecoverRomdomizedBullet();
+    }
 }
 
 
 void CpvzDlg::OnBnClickedCheck12()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK12))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK12))->GetCheck();
 
-	if (status)
-		ClayPotPerspective();
-	else
-		RecoverClayPotPerspective();
+    if (status)
+        ClayPotPerspective();
+    else
+        RecoverClayPotPerspective();
 }
 
 
 void CpvzDlg::OnBnClickedCheck13()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK13))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK13))->GetCheck();
 
-	if (status)
-		QuickConveyorBelt();
-	else
-		RecoverQucikConveyorBelt();
+    if (status)
+        QuickConveyorBelt();
+    else
+        RecoverQucikConveyorBelt();
 }
 
 
 void CpvzDlg::OnBnClickedCheck14()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK14))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK14))->GetCheck();
 
-	if (status)
-		ListPlant();
-	else
-		RecoverListPlant();
+    if (status)
+        ListPlant();
+    else
+        RecoverListPlant();
 }
 
 
 void CpvzDlg::OnBnClickedButton6()
 {
-	// TODO: Add your control notification handler code here
-	DWORD serial = g_dialog->corn_bullet.GetCurSel();
+    // TODO: Add your control notification handler code here
+    DWORD serial = g_dialog->corn_bullet.GetCurSel();
 
-	if (!bBulletFlag)
-	{
-		bBulletFlag = TRUE;
+    if (!bBulletFlag)
+    {
+        bBulletFlag = TRUE;
 
-		this->GetDlgItem(IDC_BUTTON6)->SetWindowTextW(L"È¡ÏûËø¶¨");
+        this->GetDlgItem(IDC_BUTTON6)->SetWindowTextW(L"å–æ¶ˆé”å®š");
 
-		this->GetDlgItem(IDC_COMBO9)->EnableWindow(FALSE);
+        this->GetDlgItem(IDC_COMBO9)->EnableWindow(FALSE);
 
-		this->GetDlgItem(IDC_CHECK11)->EnableWindow(FALSE);
+        this->GetDlgItem(IDC_CHECK11)->EnableWindow(FALSE);
 
-		if (serial == 0)
-		{
-			ChangeCornBulletToButter();
+        if (serial == 0)
+        {
+            ChangeCornBulletToButter();
 
-		}
-		else if (serial == 1)
-		{
-			ChangeCornBulletToBomb();
-		}
-	}
-	else
-	{
-		this->GetDlgItem(IDC_BUTTON6)->SetWindowTextW(L"Ëø¶¨");
+        }
+        else if (serial == 1)
+        {
+            ChangeCornBulletToBomb();
+        }
+    }
+    else
+    {
+        this->GetDlgItem(IDC_BUTTON6)->SetWindowTextW(L"é”å®š");
 
-		this->GetDlgItem(IDC_COMBO9)->EnableWindow(TRUE);
+        this->GetDlgItem(IDC_COMBO9)->EnableWindow(TRUE);
 
-		this->GetDlgItem(IDC_CHECK11)->EnableWindow(TRUE);
+        this->GetDlgItem(IDC_CHECK11)->EnableWindow(TRUE);
 
-		RecoverChangeCornBullet();
+        RecoverChangeCornBullet();
 
-		bBulletFlag = FALSE;
-	}
+        bBulletFlag = FALSE;
+    }
 }
 
 
 void CpvzDlg::OnBnClickedButton9()
 {
-	// TODO: Add your control notification handler code here
-	this->GetDlgItem(IDC_BUTTON9)->EnableWindow(FALSE);
+    // TODO: Add your control notification handler code here
+    this->GetDlgItem(IDC_BUTTON9)->EnableWindow(FALSE);
 
-	CleanTombstone();
+    CleanTombstone();
 
-	this->GetDlgItem(IDC_BUTTON9)->EnableWindow(TRUE);
+    this->GetDlgItem(IDC_BUTTON9)->EnableWindow(TRUE);
 }
 
 
 void CpvzDlg::OnBnClickedCheck15()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK15))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK15))->GetCheck();
 
-	if (status)
-		RomdomPlant();
-	else
-		CancelRomdomPlant();
+    if (status)
+        RomdomPlant();
+    else
+        CancelRomdomPlant();
 }
 
 
 void CpvzDlg::OnBnClickedButton10()
 {
-	// TODO: Add your control notification handler code here
-	this->GetDlgItem(IDC_BUTTON10)->EnableWindow(FALSE);
+    // TODO: Add your control notification handler code here
+    this->GetDlgItem(IDC_BUTTON10)->EnableWindow(FALSE);
 
-	CleanPlants();
+    CleanPlants();
 
-	this->GetDlgItem(IDC_BUTTON10)->EnableWindow(TRUE);
+    this->GetDlgItem(IDC_BUTTON10)->EnableWindow(TRUE);
 }
 
 
 void CpvzDlg::OnBnClickedCheck16()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK16))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK16))->GetCheck();
 
-	if (status)
-		BigMouthFlowerColdDown();
-	else
-		RecoverBigMouthFlowerColdDown();
+    if (status)
+        BigMouthFlowerColdDown();
+    else
+        RecoverBigMouthFlowerColdDown();
 }
 
 
 void CpvzDlg::OnBnClickedCheck17()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK17))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK17))->GetCheck();
 
-	if (status)
-		PotatoMineColdDown();
-	else
-		RecoverPotatoMineColdDown();
+    if (status)
+        PotatoMineColdDown();
+    else
+        RecoverPotatoMineColdDown();
 }
 
 
 void CpvzDlg::OnBnClickedCheck18()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK18))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK18))->GetCheck();
 
-	if (status)
-		CornCannonColdDown();
-	else
-		RecoverCornCannonColdDown();
+    if (status)
+        CornCannonColdDown();
+    else
+        RecoverCornCannonColdDown();
 }
 
 
 void CpvzDlg::OnBnClickedCheck19()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK19))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK19))->GetCheck();
 
-	if (status)
-		MagneticMushRoomColdDown();
-	else
-		RecoverMagneticMushRoomColdDown();
+    if (status)
+        MagneticMushRoomColdDown();
+    else
+        RecoverMagneticMushRoomColdDown();
 }
 
 
 void CpvzDlg::OnBnClickedCheck20()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK20))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK20))->GetCheck();
 
-	if (status)
-		ClearFog();
-	else
-		RecoverClearFog();
+    if (status)
+        ClearFog();
+    else
+        RecoverClearFog();
 }
 
 
 void CpvzDlg::OnBnClickedCheck21()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK21))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK21))->GetCheck();
 
-	if (status)
-		MushRoomDonotSleep();
-	else
-		RecoverMushRoomDonotSleep();
+    if (status)
+        MushRoomDonotSleep();
+    else
+        RecoverMushRoomDonotSleep();
 }
 
 
 void CpvzDlg::OnBnClickedCheck22()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK22))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK22))->GetCheck();
 
-	if (status)
-		SpikeZombies();
-	else
-		RecoverSpikeZombies();
+    if (status)
+        SpikeZombies();
+    else
+        RecoverSpikeZombies();
 }
 
 
 void CpvzDlg::OnBnClickedCheck23()
 {
-	// TODO: Add your control notification handler code here
-	int status = ((CButton*)GetDlgItem(IDC_CHECK23))->GetCheck();
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK23))->GetCheck();
 
-	if (status)
-		UndefeatedForever();
-	else
-		RecoverUndefeatedForever();
+    if (status)
+        UndefeatedForever();
+    else
+        RecoverUndefeatedForever();
 }
 
 
 void CpvzDlg::OnCbnSelchangeCombo8()
 {
-	// TODO: Add your control notification handler code here
+    // TODO: Add your control notification handler code here
 }
 
 
 void CpvzDlg::OnCbnSelchangeCombo10()
 {
-	// TODO: Add your control notification handler code here
+    // TODO: Add your control notification handler code here
 
 }
 
 
 void CpvzDlg::OnBnClickedButton12()
 {
-	// TODO: Add your control notification handler code here
-	DWORD serial = g_dialog->BulletClass.GetCurSel();
+    // TODO: Add your control notification handler code here
+    DWORD serial = g_dialog->BulletClass.GetCurSel();
 
-	switch (AllBulletFlag)
-	{
-	case 0:
-		RecoverPenetrateBullet();
+    switch (AllBulletFlag)
+    {
+    case 0:
+        RecoverPenetrateBullet();
 
-		this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"Ëø¶¨");
+        this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"é”å®š");
 
-		this->GetDlgItem(IDC_COMBO10)->EnableWindow(TRUE);
+        this->GetDlgItem(IDC_COMBO10)->EnableWindow(TRUE);
 
-		AllBulletFlag = 3;
-		break;
-	case 1:
-		RecoverBulletTracking();
+        AllBulletFlag = 3;
+        break;
+    case 1:
+        RecoverBulletTracking();
 
-		this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"Ëø¶¨");
+        this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"é”å®š");
 
-		this->GetDlgItem(IDC_COMBO10)->EnableWindow(TRUE);
+        this->GetDlgItem(IDC_COMBO10)->EnableWindow(TRUE);
 
-		AllBulletFlag = 3;
-		break;
-	case 2:
-		this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"Ëø¶¨");
+        AllBulletFlag = 3;
+        break;
+    case 2:
+        this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"é”å®š");
 
-		this->GetDlgItem(IDC_COMBO10)->EnableWindow(TRUE);
+        this->GetDlgItem(IDC_COMBO10)->EnableWindow(TRUE);
 
-		AllBulletFlag = 3;
-		break;
-	case 3:
-		this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"È¡ÏûËø¶¨");
+        AllBulletFlag = 3;
+        break;
+    case 3:
+        this->GetDlgItem(IDC_BUTTON12)->SetWindowTextW(L"å–æ¶ˆé”å®š");
 
-		this->GetDlgItem(IDC_COMBO10)->EnableWindow(FALSE);
+        this->GetDlgItem(IDC_COMBO10)->EnableWindow(FALSE);
 
-		switch (serial)
-		{
-		case 0:
-			PenetrateBullet();
+        switch (serial)
+        {
+        case 0:
+            PenetrateBullet();
 
-			AllBulletFlag = 0;
-			break;
+            AllBulletFlag = 0;
+            break;
 
-		case 1:
-			BulletTracking();
+        case 1:
+            BulletTracking();
 
-			AllBulletFlag = 1;
-			break;
+            AllBulletFlag = 1;
+            break;
 
-		case 2:
-			AllBulletFlag = 2;
-			break;
-		}
-		break;
-	}
+        case 2:
+            AllBulletFlag = 2;
+            break;
+        }
+        break;
+    }
 }
 
 
 void CpvzDlg::OnBnClickedButton11()
 {
-	// TODO: Add your control notification handler code here
-	ModifyMoney();
+    // TODO: Add your control notification handler code here
+    ModifyMoney();
 }
 
 
 void CpvzDlg::OnBnClickedButton8()
 {
-	// TODO: Add your control notification handler code here
-	this->GetDlgItem(IDC_BUTTON8)->EnableWindow(FALSE);
+    // TODO: Add your control notification handler code here
+    this->GetDlgItem(IDC_BUTTON8)->EnableWindow(FALSE);
 
-	StartupFiveCar();
+    StartupFiveCar();
 
-	Sleep(5000);
+    Sleep(5000);
 
-	RecoverFiveCar();
+    RecoverFiveCar();
 
-	this->GetDlgItem(IDC_BUTTON8)->EnableWindow(TRUE);
+    this->GetDlgItem(IDC_BUTTON8)->EnableWindow(TRUE);
 }
 
 
 void CpvzDlg::OnBnClickedButton13()
 {
-	// TODO: Add your control notification handler code here
-	this->GetDlgItem(IDC_BUTTON13)->EnableWindow(FALSE);
+    // TODO: Add your control notification handler code here
+    this->GetDlgItem(IDC_BUTTON13)->EnableWindow(FALSE);
 
-	StartupSixCar();
+    StartupSixCar();
 
-	Sleep(5000);
+    Sleep(5000);
 
-	RecoverSixCar();
+    RecoverSixCar();
 
-	this->GetDlgItem(IDC_BUTTON13)->EnableWindow(TRUE);
+    this->GetDlgItem(IDC_BUTTON13)->EnableWindow(TRUE);
 }
 
 
 void CpvzDlg::OnCbnSelchangeCombo6()
 {
-	// TODO: Add your control notification handler code here
+    // TODO: Add your control notification handler code here
+}
+
+
+void CpvzDlg::OnBnClickedCheck24()
+{
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK24))->GetCheck();
+
+    if (status)
+    {
+        this->GetDlgItem(IDC_CHECK25)->EnableWindow(false);
+        this->GetDlgItem(IDC_BUTTON8)->EnableWindow(false);
+        this->GetDlgItem(IDC_BUTTON13)->EnableWindow(false);
+        SetFiveCarTimer();
+    }
+    else
+    {
+        CancelFiveCarTimer();
+        this->GetDlgItem(IDC_BUTTON13)->EnableWindow(true);
+        this->GetDlgItem(IDC_BUTTON8)->EnableWindow(true);
+        this->GetDlgItem(IDC_CHECK25)->EnableWindow(true);
+    }
+}
+
+
+void CpvzDlg::OnBnClickedCheck25()
+{
+    // TODO: Add your control notification handler code here
+    int status = ((CButton*)GetDlgItem(IDC_CHECK25))->GetCheck();
+
+    if (status)
+    {
+        this->GetDlgItem(IDC_CHECK24)->EnableWindow(false);
+        this->GetDlgItem(IDC_BUTTON8)->EnableWindow(false);
+        this->GetDlgItem(IDC_BUTTON13)->EnableWindow(false);
+        SetSixCarTimer();
+    }
+    else
+    {
+        CancelSixCarTimer();
+        this->GetDlgItem(IDC_CHECK24)->EnableWindow(true);
+        this->GetDlgItem(IDC_BUTTON13)->EnableWindow(true);
+        this->GetDlgItem(IDC_BUTTON8)->EnableWindow(true);
+    }
 }

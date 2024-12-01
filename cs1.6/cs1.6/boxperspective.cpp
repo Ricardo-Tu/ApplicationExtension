@@ -1,4 +1,4 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "boxperspective.hpp"
 #include "cs1.6Dlg.h"
 
@@ -55,7 +55,7 @@ namespace game {
             for (uint32_t j = 0; j < 4; j++)
             {
                 selfMatrixOffset[0] = base + ((i * 0x4) + j) * 0x4;
-                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&selfMatrix[i][j], selfMatrixOffset);
+                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&selfMatrix[i][j], selfMatrixOffset);
             }
         }
     }
@@ -69,11 +69,11 @@ namespace game {
         {
             for (uint32_t j = 0; j < 30; j++)
             {
-                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&x, boneOffset);
+                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&x, boneOffset);
                 boneOffset[1] += 4;
-                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&y, boneOffset);
+                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&y, boneOffset);
                 boneOffset[1] += 4;
-                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&z, boneOffset);
+                g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&z, boneOffset);
                 (*pbone_positions)[i].emplace_back(x, y, z, 0.0f, 0.0f);
                 boneOffset[1] += 0x18;
             }
@@ -102,7 +102,7 @@ namespace game {
                 ndc[1] = clipCoords[1] / clipCoords[3];
                 ndc[2] = clipCoords[2] / clipCoords[3];
                 (*pbone_positions)[i][j].x_pos = (wi.win_width / 2 * ndc[0]) + (ndc[0] + wi.win_width / 2);
-                (*pbone_positions)[i][j].y_pos = -(wi.win_height / 2 * ndc[1]) + (ndc[1]+ wi.win_height / 2);
+                (*pbone_positions)[i][j].y_pos = -(wi.win_height / 2 * ndc[1]) + (ndc[1] + wi.win_height / 2);
             }
         }
     }
@@ -113,7 +113,7 @@ namespace game {
         {
             for (uint32_t j = 1; j < (*pbone_positions)[i].size(); j++)
             {
-                SDL_RenderDrawLine(render,(*pbone_positions)[i][j].x_pos, (*pbone_positions)[i][j].y_pos, (*pbone_positions)[i][j-1].x_pos, (*pbone_positions)[i][j-1].y_pos);
+                SDL_RenderDrawLine(render, (int)(*pbone_positions)[i][j].x_pos, (int)(*pbone_positions)[i][j].y_pos, (int)(*pbone_positions)[i][j - 1].x_pos, (int)(*pbone_positions)[i][j - 1].y_pos);
             }
         }
     }
@@ -126,26 +126,27 @@ namespace game {
         uint32_t bot_number = 0;
         float liveOrDie = 0; // 
         std::vector<uint32_t> bot_numberOffset = { 0x005F73AC, 0xD0, 0x70, 0x110, 0x9C };
-        g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32(&bot_number, bot_numberOffset);
+        g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory<uint32_t>(&bot_number, bot_numberOffset);
         std::vector<uint32_t> coordinationOffset = { 0x11069BC , 0x7c, 0x4, 0x8 };
         std::vector<uint32_t> teamOffset = { 0x11069BC, 0x7c, 0x1c8 };
         std::vector<uint32_t> liveOrDieOffset = { 0x11069BC, 0x7c, 0x4, 0x16c };
         std::vector<uint32_t> bloodOffset = { 0x11069BC, 0x7c, 0x4, 0x160 };
         players.clear();
-        for (int i = 0; i < bot_number + 1; i++)
+        bot_number = 9;
+        for (uint32_t i = 0; i < bot_number + 1; i++)
         {
             bloodOffset[3] = 0x160 + i * 0x324;
             teamOffset[1] = 0x7c + i * 0x324;
-            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&blood, bloodOffset);
-            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32(&team, teamOffset);
+            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&blood, bloodOffset);
+            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory<uint32_t>(&team, teamOffset);
             liveOrDieOffset[3] = 0x16c + i * 0x324;
-            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&liveOrDie, liveOrDieOffset);
+            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&liveOrDie, liveOrDieOffset);
             coordinationOffset[3] = 0x8 + i * 0x324;
-            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&x_temp, coordinationOffset);
+            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&x_temp, coordinationOffset);
             coordinationOffset[3] += 0x4;
-            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&y_temp, coordinationOffset);
+            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&y_temp, coordinationOffset);
             coordinationOffset[3] += 0x4;
-            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory32float(&z_temp, coordinationOffset);
+            g_pGameContext->modules[L"cstrike.exe"]->ReadMultiLevelMemory(&z_temp, coordinationOffset);
             if ((uint32_t)liveOrDie > 1 || i == 0)
                 players.push_back(Player(x_temp, y_temp, z_temp, (uint32_t)blood, team, 0, 0, 0, 0));
         }
@@ -176,7 +177,7 @@ namespace game {
             yh_pos = -(wi.win_height / 2 * ndc_yh) + (ndc_yh + wi.win_height / 2);
             yl_pos = -(wi.win_height / 2 * ndc_yl) + (ndc_yl + wi.win_height / 2);
             players[i].rectangle_height = yl_pos - yh_pos;
-            players[i].rectangle_width = players[i].rectangle_height * 0.5;
+            players[i].rectangle_width = players[i].rectangle_height * 0.5f;
         }
 
 
@@ -184,7 +185,7 @@ namespace game {
 
     void drawWindowBox(SDL_Renderer* render)
     {
-        SDL_Rect rect = { 0, 0, wi.win_width, wi.win_height };
+        SDL_Rect rect = { 0, 0, (int)wi.win_width, (int)wi.win_height };
         SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
         SDL_RenderDrawRect(render, &rect);
     }
@@ -233,7 +234,7 @@ namespace game {
         }
         if (bone_flag == 1)
         {
-            readBonePosition(players.size());
+            readBonePosition((uint32_t)players.size());
             drawBone(render);
         }
         SDL_RenderPresent(render);
@@ -242,7 +243,7 @@ namespace game {
     void boxperspective_thread()
     {
 
-        // ≥ı ºªØ SDL
+        // ÂàùÂßãÂåñ SDL
         if (SDL_Init(SDL_INIT_VIDEO) != 0) {
             std::stringstream ss;
             ss << "SDL_Init Error: " << SDL_GetError() << std::endl;
@@ -257,7 +258,7 @@ namespace game {
 
         GetWindowsInfo(L"Counter-Strike", &wi);
 
-        // ¥¥Ω®“ª∏ˆ¥∞ø⁄
+        // ÂàõÂª∫‰∏Ä‰∏™Á™óÂè£
         SDL_Window* window = SDL_CreateWindow("Transparent Window",
             wi.win_x_pos,
             wi.win_y_pos,
@@ -269,20 +270,20 @@ namespace game {
             return;
         }
 
-        // ªÒ»°¥∞ø⁄µƒ Win32 æ‰±˙
+        // Ëé∑ÂèñÁ™óÂè£ÁöÑ Win32 Âè•ÊüÑ
         SDL_SysWMinfo wmInfo;
         SDL_VERSION(&wmInfo.version);
         SDL_GetWindowWMInfo(window, &wmInfo);
         HWND hwnd = wmInfo.info.win.window;
 
-        // …Ë÷√¥∞ø⁄—˘ Ω£¨ π∆‰÷ß≥÷Õ∏√˜∂»
+        // ËÆæÁΩÆÁ™óÂè£Ê†∑ÂºèÔºå‰ΩøÂÖ∂ÊîØÊåÅÈÄèÊòéÂ∫¶
         LONG exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
         SetWindowLong(hwnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
 
-        // …Ë÷√¥∞ø⁄Õ∏√˜∂»Œ™ÕÍ»´Õ∏√˜
+        // ËÆæÁΩÆÁ™óÂè£ÈÄèÊòéÂ∫¶‰∏∫ÂÆåÂÖ®ÈÄèÊòé
         SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 
-        // ¥¥Ω®“ª∏ˆ‰÷»æ∆˜
+        // ÂàõÂª∫‰∏Ä‰∏™Ê∏≤ÊüìÂô®
         SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (renderer == NULL) {
             SDL_DestroyWindow(window);
@@ -300,7 +301,7 @@ namespace game {
             OutputDebugStringA(ss.str().c_str());
         }
 
-        // …Ë÷√‰÷»æ∆˜Õ∏√˜∂»
+        // ËÆæÁΩÆÊ∏≤ÊüìÂô®ÈÄèÊòéÂ∫¶
         SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
         SDL_Event e;
         int quit = 0;
@@ -316,7 +317,7 @@ namespace game {
 
         }
 
-        // «Â¿Ì
+        // Ê∏ÖÁêÜ
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();

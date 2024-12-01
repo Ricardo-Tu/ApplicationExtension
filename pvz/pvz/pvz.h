@@ -1,14 +1,14 @@
-
+﻿
 // pvz.h : main header file for the PROJECT_NAME application
 //
 
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error "include 'pch.h' before including this file for PCH"
+#error "include 'pch.h' before including this file for PCH"
 #endif
 
-#include "resource.h"		// main symbols
+#include "resource.h"        // main symbols
 
 
 // CpvzApp:
@@ -18,16 +18,16 @@
 class CpvzApp : public CWinApp
 {
 public:
-	CpvzApp();
+    CpvzApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
+    virtual BOOL InitInstance();
+    virtual int ExitInstance();
 
-// Implementation
+    // Implementation
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 extern CpvzApp theApp;

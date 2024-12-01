@@ -1,14 +1,15 @@
-#pragma once
+﻿#pragma once
+#include <thread>
 
 extern BOOLEAN cardSlotCoolDown[10];
 
 extern PVOID lpkillZombiesFlagAddress;
 
-VOID WINAPI	LockSunShine();
+VOID WINAPI LockSunShine();
 
 VOID WINAPI RecoverLockSunShineShineOriginalCode();
 
-VOID WINAPI	ModifySunShine();
+VOID WINAPI ModifySunShine();
 
 VOID WINAPI DecreaseCardCooldown();
 
@@ -18,7 +19,7 @@ VOID WINAPI NoCardCooldown();
 
 VOID WINAPI CancelNoCardCooldown();
 
-VOID WINAPI	AutomaticallyCollectionSunShine();
+VOID WINAPI AutomaticallyCollectionSunShine();
 
 VOID WINAPI RecoverAutomaticallyCollectionSunShine();
 
@@ -30,15 +31,15 @@ VOID WINAPI BTBullet();
 
 VOID WINAPI RecoverBTBullet();
 
-VOID WINAPI ModifyCardSlotPlant(ULONG cardslot,ULONG plant);
+VOID WINAPI ModifyCardSlotPlant(ULONG cardslot, ULONG plant);
 
-VOID WINAPI Plant(ULONG row,ULONG list,ULONG plant);
+VOID WINAPI Plant(ULONG row, ULONG column, ULONG plant);
 
 VOID WINAPI PlantOverlapping();
 
 VOID WINAPI RecoverPlantOverlappint();
 
-VOID WINAPI ZombiesPlant(ULONG row, ULONG list, ULONG zombies);
+VOID WINAPI ZombiesPlant(ULONG row, ULONG column, ULONG zombies);
 
 VOID WINAPI PurpleDirectPlant();
 
@@ -64,7 +65,7 @@ VOID WINAPI ClayPotPerspective();
 
 VOID WINAPI RecoverClayPotPerspective();
 
-VOID WINAPI	QuickConveyorBelt();
+VOID WINAPI QuickConveyorBelt();
 
 VOID WINAPI RecoverQucikConveyorBelt();
 
@@ -88,19 +89,19 @@ VOID WINAPI CancelRomdomPlant();
 
 VOID WINAPI BigMouthFlowerColdDown();
 
-VOID WINAPI	RecoverBigMouthFlowerColdDown();
+VOID WINAPI RecoverBigMouthFlowerColdDown();
 
 VOID WINAPI PotatoMineColdDown();
 
-VOID WINAPI	RecoverPotatoMineColdDown();
+VOID WINAPI RecoverPotatoMineColdDown();
 
 VOID WINAPI CornCannonColdDown();
 
-VOID WINAPI	RecoverCornCannonColdDown();
+VOID WINAPI RecoverCornCannonColdDown();
 
 VOID WINAPI MagneticMushRoomColdDown();
 
-VOID WINAPI	RecoverMagneticMushRoomColdDown();
+VOID WINAPI RecoverMagneticMushRoomColdDown();
 
 VOID WINAPI ClearFog();
 
@@ -136,6 +137,14 @@ VOID WINAPI StartupFiveCar();
 
 VOID WINAPI RecoverFiveCar();
 
+VOID WINAPI SetFiveCarTimer();
+
+VOID WINAPI CancelFiveCarTimer();
+
 VOID WINAPI StartupSixCar();
 
 VOID WINAPI RecoverSixCar();
+
+VOID WINAPI SetSixCarTimer();
+
+VOID WINAPI CancelSixCarTimer();

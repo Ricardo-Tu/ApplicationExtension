@@ -222,9 +222,6 @@
     <ClCompile Include="pvzDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="pvz.idl" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="pvz.reg" />
     <None Include="res\pvz.rc2" />
   </ItemGroup>
