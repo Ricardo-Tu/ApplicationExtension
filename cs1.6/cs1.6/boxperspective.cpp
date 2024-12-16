@@ -159,7 +159,8 @@ namespace game {
             float clipCoords_yh = 0, ndc_yh = 0, yh_pos = 0;
             float clipCoords_yl = 0, ndc_yl = 0, yl_pos = 0;
             wi.game_width = 1920;
-            wi.game_height = 1080;            clipCoords[0] = players[i].x * selfMatrix[0][0] + players[i].y * selfMatrix[1][0] + players[i].z * selfMatrix[2][0] + selfMatrix[3][0];
+            wi.game_height = 1080;
+            clipCoords[0] = players[i].x * selfMatrix[0][0] + players[i].y * selfMatrix[1][0] + players[i].z * selfMatrix[2][0] + selfMatrix[3][0];
             clipCoords[1] = players[i].x * selfMatrix[0][1] + players[i].y * selfMatrix[1][1] + players[i].z * selfMatrix[2][1] + selfMatrix[3][1];
             clipCoords[2] = players[i].x * selfMatrix[0][2] + players[i].y * selfMatrix[1][2] + players[i].z * selfMatrix[2][2] + selfMatrix[3][2];
             clipCoords[3] = players[i].x * selfMatrix[0][3] + players[i].y * selfMatrix[1][3] + players[i].z * selfMatrix[2][3] + selfMatrix[3][3];

@@ -2060,18 +2060,21 @@ VOID WINAPI RecoverBulletTracking()
          0x458555
 
          60                       | pushad                                  |
-         BE 44332211              | mov esi,11223344                        |
+         // BE 44332211              | mov esi,11223344                        |
+         68 44332211              | push 11223344                           |
          BA A08D4500              | mov edx,458DA0                          |
          FFD2                     | call edx                                |
          61                       | popad                                   |
          C3                       | ret                                     |
+
+         C647 30 00               | mov byte ptr ds:[edi+30],0              |
 */
 
 VOID WINAPI StartupFiveCar()
 {
     STATUS status = STATUS::NoneError;
 
-    BYTE code[] = { "\x60\xBE\x44\x33\x22\x11\xBA\xA0\x8D\x45\x00\xFF\xD2\x61\xC3" },
+    BYTE code[] = { "\x60\x68\x44\x33\x22\x11\xBA\xA0\x8D\x45\x00\xFF\xD2\x61\xC3" },
         purposecode[] = { "\xc6\x47\x30\x00" };
 
     ULONG dwCarEsi = 0, offset[] = { 0x2a9ec0, 0x768, 0x100 };
