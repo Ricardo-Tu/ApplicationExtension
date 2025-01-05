@@ -93,16 +93,13 @@ namespace game {
                 clipCoords[1] = (*pbone_positions)[i][j].x * selfMatrix[0][1] + (*pbone_positions)[i][j].y * selfMatrix[1][1] + (*pbone_positions)[i][j].z * selfMatrix[2][1] + selfMatrix[3][1];
                 clipCoords[2] = (*pbone_positions)[i][j].x * selfMatrix[0][2] + (*pbone_positions)[i][j].y * selfMatrix[1][2] + (*pbone_positions)[i][j].z * selfMatrix[2][2] + selfMatrix[3][2];
                 clipCoords[3] = (*pbone_positions)[i][j].x * selfMatrix[0][3] + (*pbone_positions)[i][j].y * selfMatrix[1][3] + (*pbone_positions)[i][j].z * selfMatrix[2][3] + selfMatrix[3][3];
-                ndc[0] = clipCoords[0] / clipCoords[3];
-                ndc[1] = clipCoords[1] / clipCoords[3];
-                ndc[2] = clipCoords[2] / clipCoords[3];
                 if (clipCoords[3] < 0.1f)
                     continue;
                 ndc[0] = clipCoords[0] / clipCoords[3];
                 ndc[1] = clipCoords[1] / clipCoords[3];
                 ndc[2] = clipCoords[2] / clipCoords[3];
-                (*pbone_positions)[i][j].x_pos = (wi.win_width / 2 * ndc[0]) + (ndc[0] + wi.win_width / 2);
-                (*pbone_positions)[i][j].y_pos = -(wi.win_height / 2 * ndc[1]) + (ndc[1] + wi.win_height / 2);
+                (*pbone_positions)[i][j].x_pos = (wi.win_width / 2 * ndc[0]) + (wi.win_width / 2);
+                (*pbone_positions)[i][j].y_pos = -(wi.win_height / 2 * ndc[1]) + (wi.win_height / 2);
             }
         }
     }
@@ -173,15 +170,14 @@ namespace game {
             ndc_yl = clipCoords_yl / clipCoords[3];
             if (clipCoords[3] < 0.1f)
                 continue;
-            players[i].x_pos = (wi.win_width / 2 * ndc[0]) + (ndc[0] + wi.win_width / 2);
-            players[i].y_pos = -(wi.win_height / 2 * ((ndc_yh + ndc_yl) / 2)) + (((ndc_yh + ndc_yl) / 2) + wi.win_height / 2);
+            // 屏幕坐标系x轴朝右y轴朝下，原点在屏幕左上角
+            players[i].x_pos = (wi.win_width / 2 * ndc[0]) + (wi.win_width / 2);    // 
+            players[i].y_pos = -(wi.win_height / 2 * ((ndc_yh + ndc_yl) / 2)) + (wi.win_height / 2);
             yh_pos = -(wi.win_height / 2 * ndc_yh) + (ndc_yh + wi.win_height / 2);
             yl_pos = -(wi.win_height / 2 * ndc_yl) + (ndc_yl + wi.win_height / 2);
             players[i].rectangle_height = yl_pos - yh_pos;
             players[i].rectangle_width = players[i].rectangle_height * 0.5f;
         }
-
-
     }
 
     void drawWindowBox(SDL_Renderer* render)
