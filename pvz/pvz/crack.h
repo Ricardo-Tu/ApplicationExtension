@@ -4,6 +4,7 @@
 #include <TlHelp32.h>
 #include <string>
 #include <stdexcept>
+#include <thread>
 #define arraysize(arr) (sizeof(arr)/sizeof(arr[0]))
 
 enum class STATUS

@@ -105,3 +105,5 @@ public:
 extern CpvzDlg* g_dialog;
 
 extern CrackRE32* g_crack;
+
+extern bool fiveCarThreadFlag, sixCarThreadFlag;

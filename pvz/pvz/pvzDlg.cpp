@@ -21,6 +21,7 @@
 
 CpvzDlg* g_dialog;
 CrackRE32* g_crack;
+bool fiveCarThreadFlag = 0, sixCarThreadFlag = 0;
 BOOLEAN bBulletFlag = FALSE;
 LONG AllBulletFlag = FALSE;
 
@@ -1181,7 +1182,9 @@ void CpvzDlg::OnBnClickedButton8()
     // TODO: Add your control notification handler code here
     this->GetDlgItem(IDC_BUTTON8)->EnableWindow(FALSE);
 
-    StartupFiveCar();
+    std::thread fiveCarthread(StartupFiveCar);
+
+    fiveCarthread.detach();
 
     Sleep(5000);
 
@@ -1196,7 +1199,9 @@ void CpvzDlg::OnBnClickedButton13()
     // TODO: Add your control notification handler code here
     this->GetDlgItem(IDC_BUTTON13)->EnableWindow(FALSE);
 
-    StartupSixCar();
+    std::thread sixCarthread(StartupSixCar);
+
+    sixCarthread.detach();
 
     Sleep(5000);
 

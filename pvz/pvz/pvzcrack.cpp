@@ -2060,9 +2060,10 @@ VOID WINAPI RecoverBulletTracking()
          0x458555
 
          60                       | pushad                                  |
-         // BE 44332211              | mov esi,11223344                        |
-         68 44332211              | push 11223344                           |
-         BA A08D4500              | mov edx,458DA0                          |
+         BE 44332211              | mov esi,11223344                        |
+         56                       | push esi                                |
+         B8 44332211              | mov eax,11223344                        |
+         BA 40854500              | mov edx,458540                          |
          FFD2                     | call edx                                |
          61                       | popad                                   |
          C3                       | ret                                     |
@@ -2074,10 +2075,10 @@ VOID WINAPI StartupFiveCar()
 {
     STATUS status = STATUS::NoneError;
 
-    BYTE code[] = { "\x60\x68\x44\x33\x22\x11\xBA\xA0\x8D\x45\x00\xFF\xD2\x61\xC3" },
+    BYTE code[] = { "\x60\xBE\x44\x33\x22\x11\x56\xB8\x44\x33\x22\x11\xBA\x40\x85\x45\x00\xFF\xD2\x61\xC3" },
         purposecode[] = { "\xc6\x47\x30\x00" };
 
-    ULONG dwCarEsi = 0, offset[] = { 0x2a9ec0, 0x768, 0x100 };
+    ULONG dwCarEax = 0, offset[] = { 0x2a9ec0, 0x768, 0x100 };
 
     float carlocation = -15;
 
@@ -2091,6 +2092,37 @@ VOID WINAPI StartupFiveCar()
         sizeof(float),
         PAGE_EXECUTE_READWRITE,
         &dwOldPageAttribute
+    );
+    // 60            | pushad                              |
+    // 890D 44332211 | mov dword ptr ds : [11223344] , ecx | 
+    // 61            | popad                               |
+    BYTE inJuctcode[] = "\x60\x89\x0D\x44\x33\x22\x11\x61";
+    //        PlantsVsZombies.exe + 12D9E1 - D9 41 2C - fld dword ptr[ecx + 2C]
+    //        PlantsVsZombies.exe + 12D9E4 - 57 - push edi
+    //        PlantsVsZombies.exe + 12D9E5 - DA 61 08 - fisub[ecx + 08]
+    BYTE srcCode[] = "\xd9\x41\x2c\x57\xda\x61\x08";
+    PUCHAR pbuf = (PUCHAR)VirtualAllocEx(g_crack->stGameInfo->hGame,
+        NULL,
+        0x10,
+        MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE
+    );
+    if (!pbuf)
+    {
+        CString szEditString;
+        szEditString.Format(L"StartupFiveCar allocate memory failed.\n");
+        g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
+        return;
+    }
+    *(DWORD*)(inJuctcode + 3) = (DWORD)pbuf;
+    status = g_crack->AssemblyInject32(
+        (PUCHAR)g_crack->stGameInfo->lpBase + 0x12D9E1,
+        inJuctcode,
+        sizeof(inJuctcode) - 1,
+        TRUE,
+        srcCode,
+        sizeof(srcCode) - 1,
+        TRUE
     );
 
     WriteProcessMemory(
@@ -2112,7 +2144,7 @@ VOID WINAPI StartupFiveCar()
 
     status = g_crack->ReadLayerMemory32(
         g_crack->stGameInfo->lpBase,
-        &dwCarEsi,
+        &dwCarEax,
         offset,
         arraysize(offset) - 1
     );
@@ -2126,8 +2158,18 @@ VOID WINAPI StartupFiveCar()
 
     for (ULONG i = 0; i < 5; i++)
     {
-        *(PDWORD)(code + 2) = dwCarEsi + i * 0x48;
-
+        DWORD zombie = 0;
+        do {
+            ReadProcessMemory(
+                g_crack->stGameInfo->hGame,
+                pbuf,
+                &zombie,
+                sizeof(zombie),
+                NULL
+            );
+        } while (zombie == 0);
+        *(PDWORD)(code + 2) = zombie;
+        *(PDWORD)(code + 8) = dwCarEax + i * 0x48;
         status = g_crack->RemoteThreadExecuteShellCode(
             code,
             sizeof(code) - 1
@@ -2139,6 +2181,14 @@ VOID WINAPI StartupFiveCar()
 
             g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
         }
+        zombie = 0;
+        WriteProcessMemory(
+            g_crack->stGameInfo->hGame,
+            pbuf,
+            &zombie,
+            sizeof(zombie),
+            NULL
+        );
     }
 }
 
@@ -2203,10 +2253,10 @@ VOID WINAPI StartupSixCar()
 {
     STATUS status = STATUS::NoneError;
 
-    BYTE code[] = { "\x60\xBE\x44\x33\x22\x11\xBA\xA0\x8D\x45\x00\xFF\xD2\x61\xC3" },
+    BYTE code[] = { "\x60\xBE\x44\x33\x22\x11\x56\xB8\x44\x33\x22\x11\xBA\x40\x85\x45\x00\xFF\xD2\x61\xC3" },
         purposecode[] = { "\xc6\x47\x30\x00" };
 
-    ULONG dwCarEsi = 0, offset[] = { 0x2a9ec0, 0x768, 0x100 };
+    ULONG dwCarEax = 0, offset[] = { 0x2a9ec0, 0x768, 0x100 };
 
     float carlocation = -15;
 
@@ -2229,6 +2279,45 @@ VOID WINAPI StartupSixCar()
         sizeof(float),
         NULL
     );
+    // 60            | pushad                              |
+    // 890D 44332211 | mov dword ptr ds : [11223344] , ecx | 
+    // 61            | popad                               |
+    BYTE inJuctcode[] = "\x60\x89\x0D\x44\x33\x22\x11\x61";
+    //        PlantsVsZombies.exe + 12D9E1 - D9 41 2C - fld dword ptr[ecx + 2C]
+    //        PlantsVsZombies.exe + 12D9E4 - 57 - push edi
+    //        PlantsVsZombies.exe + 12D9E5 - DA 61 08 - fisub[ecx + 08]
+    BYTE srcCode[] = "\xd9\x41\x2c\x57\xda\x61\x08";
+    PUCHAR pbuf = (PUCHAR)VirtualAllocEx(g_crack->stGameInfo->hGame,
+        NULL,
+        0x10,
+        MEM_COMMIT,
+        PAGE_EXECUTE_READWRITE
+    );
+    if (!pbuf)
+    {
+        CString szEditString;
+        szEditString.Format(L"StartupFiveCar allocate memory failed.\n");
+        g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
+        return;
+    }
+    *(DWORD*)(inJuctcode + 3) = (DWORD)pbuf;
+    status = g_crack->AssemblyInject32(
+        (PUCHAR)g_crack->stGameInfo->lpBase + 0x12D9E1,
+        inJuctcode,
+        sizeof(inJuctcode) - 1,
+        TRUE,
+        srcCode,
+        sizeof(srcCode) - 1,
+        TRUE
+    );
+
+    WriteProcessMemory(
+        g_crack->stGameInfo->hGame,
+        (PUCHAR)g_crack->stGameInfo->lpBase + 0x279bf8,
+        &carlocation,
+        sizeof(float),
+        NULL
+    );
 
     WriteProcessMemory(
         g_crack->stGameInfo->hGame,
@@ -2240,7 +2329,7 @@ VOID WINAPI StartupSixCar()
 
     status = g_crack->ReadLayerMemory32(
         g_crack->stGameInfo->lpBase,
-        &dwCarEsi,
+        &dwCarEax,
         offset,
         arraysize(offset) - 1
     );
@@ -2254,7 +2343,18 @@ VOID WINAPI StartupSixCar()
 
     for (ULONG i = 0; i < 6; i++)
     {
-        *(PDWORD)(code + 2) = dwCarEsi + i * 0x48;
+        DWORD zombie = 0;
+        do {
+            ReadProcessMemory(
+                g_crack->stGameInfo->hGame,
+                pbuf,
+                &zombie,
+                sizeof(zombie),
+                NULL
+            );
+        } while (zombie == 0);
+        *(PDWORD)(code + 2) = zombie;
+        *(PDWORD)(code + 8) = dwCarEax + i * 0x48;
 
         status = g_crack->RemoteThreadExecuteShellCode(
             code,
@@ -2267,6 +2367,14 @@ VOID WINAPI StartupSixCar()
 
             g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
         }
+        zombie = 0;
+        WriteProcessMemory(
+            g_crack->stGameInfo->hGame,
+            pbuf,
+            &zombie,
+            sizeof(zombie),
+            NULL
+        );
     }
 }
 
@@ -2315,7 +2423,8 @@ VOID WINAPI RecoverSixCar()
 }
 
 VOID FiveCarThread() {
-    StartupFiveCar();
+    std::thread fiveCarthread(StartupFiveCar);
+    fiveCarthread.detach();
     Sleep(6000);
     RecoverFiveCar();
 }
@@ -2341,7 +2450,8 @@ VOID WINAPI CancelFiveCarTimer()
 }
 
 VOID SixCarThread() {
-    StartupSixCar();
+    std::thread sixCarthread(StartupSixCar);
+    sixCarthread.detach();
     Sleep(6000);
     RecoverSixCar();
 }
