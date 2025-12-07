@@ -60,7 +60,6 @@ BEGIN
     "#include ""afxribbon.rc""   // MFC ribbon and control bar resources\r\n"
     "#endif\r\n"
     "#endif\r\n"
-    "1 TYPELIB ""pvz.tlb""\r\n"
     "\0"
 END
 
@@ -269,7 +268,7 @@ LANGUAGE 9, 1
 #include "afxribbon.rc"   // MFC ribbon and control bar resources
 #endif
 #endif
-1 TYPELIB "pvz.tlb"
+//1 TYPELIB "pvz.tlb"
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

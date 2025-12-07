@@ -206,7 +206,7 @@ VOID CardCoolDownTimer(HWND, UINT, UINT_PTR, DWORD)
             {
                 CString szEditStr;
 
-                szEditStr.Format(L"Card cool down write layer momory failed!\n");
+                szEditStr.Format(L"Card cool down write layer memory failed!\n");
 
                 g_dialog->GetDlgItem(IDC_EDIT2)->GetWindowTextW(szEditStr);
             }
@@ -1346,7 +1346,7 @@ VOID WINAPI RecoverChangeCornBullet()
     return;
 }
 
-VOID WINAPI BigMouthFlowerColdDown()
+VOID WINAPI BigMouthFlowerCoolDown()
 {
     BYTE purposecode[] = { "\xc7\x47\x54\x00\x00\x00\x00" };
 
@@ -1364,13 +1364,13 @@ VOID WINAPI BigMouthFlowerColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"BigMouthFlowerColdDown routine cover memory failed!\n");
+        szEditString.Format(L"BigMouthFlowerCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }
 }
 
-VOID WINAPI    RecoverBigMouthFlowerColdDown()
+VOID WINAPI    RecoverBigMouthFlowerCoolDown()
 {
     BYTE originalcode[] = { "\xc7\x47\x54\xa0\x0f\x00\x00" };
 
@@ -1388,14 +1388,14 @@ VOID WINAPI    RecoverBigMouthFlowerColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"RecoverBigMouthFlowerColdDown routine cover memory failed!\n");
+        szEditString.Format(L"RecoverBigMouthFlowerCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }
 }
 
 
-VOID WINAPI PotatoMineColdDown()
+VOID WINAPI PotatoMineCoolDown()
 {
     BYTE purposecode[] = { "\xc7\x40\x54\x00\x00\x00\x00" };
 
@@ -1413,14 +1413,14 @@ VOID WINAPI PotatoMineColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"PotatoMineColdDown routine cover memory failed!\n");
+        szEditString.Format(L"PotatoMineCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }
 }
 
 
-VOID WINAPI    RecoverPotatoMineColdDown()
+VOID WINAPI    RecoverPotatoMineCoolDown()
 {
     BYTE originalcode[] = { "\xc7\x40\x54\xdc\x05\x00\x00" };
 
@@ -1438,14 +1438,14 @@ VOID WINAPI    RecoverPotatoMineColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"RecoverPotatoMineColdDown routine cover memory failed!\n");
+        szEditString.Format(L"RecoverPotatoMineCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }
 }
 
 
-VOID WINAPI CornCannonColdDown()
+VOID WINAPI CornCannonCoolDown()
 {
     BYTE purposecode[] = { "\xC7\x47\x54\x00\x00\x00\x00" };
 
@@ -1463,14 +1463,14 @@ VOID WINAPI CornCannonColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"CornCannonColdDown routine cover memory failed!\n");
+        szEditString.Format(L"CornCannonCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }
 }
 
 
-VOID WINAPI    RecoverCornCannonColdDown()
+VOID WINAPI    RecoverCornCannonCoolDown()
 {
     BYTE originalcode[] = { "\xC7\x47\x54\xB8\x0B\x00\x00" };
 
@@ -1488,14 +1488,14 @@ VOID WINAPI    RecoverCornCannonColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"RecoverCornCannonColdDown routine cover memory failed!\n");
+        szEditString.Format(L"RecoverCornCannonCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }
 }
 
 
-VOID WINAPI MagneticMushRoomColdDown()
+VOID WINAPI MagneticMushRoomCoolDown()
 {
     BYTE purposecode[] = { "\xC7\x45\x54\x00\x00\x00\x00" };
 
@@ -1513,14 +1513,14 @@ VOID WINAPI MagneticMushRoomColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"MagneticMushRoomColdDown routine cover memory failed!\n");
+        szEditString.Format(L"MagneticMushRoomCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }
 }
 
 
-VOID WINAPI    RecoverMagneticMushRoomColdDown()
+VOID WINAPI    RecoverMagneticMushRoomCoolDown()
 {
     BYTE originalcode[] = { "\xC7\x45\x54\xDC\x05\x00\x00" };
 
@@ -1538,7 +1538,7 @@ VOID WINAPI    RecoverMagneticMushRoomColdDown()
     {
         CString szEditString;
 
-        szEditString.Format(L"RecoverMagneticMushRoomColdDown routine cover memory failed!\n");
+        szEditString.Format(L"RecoverMagneticMushRoomCoolDown routine cover memory failed!\n");
 
         g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditString);
     }

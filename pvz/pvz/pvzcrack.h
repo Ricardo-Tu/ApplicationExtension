@@ -87,21 +87,21 @@ VOID WINAPI RomdomPlant();
 
 VOID WINAPI CancelRomdomPlant();
 
-VOID WINAPI BigMouthFlowerColdDown();
+VOID WINAPI BigMouthFlowerCoolDown();
 
-VOID WINAPI RecoverBigMouthFlowerColdDown();
+VOID WINAPI RecoverBigMouthFlowerCoolDown();
 
-VOID WINAPI PotatoMineColdDown();
+VOID WINAPI PotatoMineCoolDown();
 
-VOID WINAPI RecoverPotatoMineColdDown();
+VOID WINAPI RecoverPotatoMineCoolDown();
 
-VOID WINAPI CornCannonColdDown();
+VOID WINAPI CornCannonCoolDown();
 
-VOID WINAPI RecoverCornCannonColdDown();
+VOID WINAPI RecoverCornCannonCoolDown();
 
-VOID WINAPI MagneticMushRoomColdDown();
+VOID WINAPI MagneticMushRoomCoolDown();
 
-VOID WINAPI RecoverMagneticMushRoomColdDown();
+VOID WINAPI RecoverMagneticMushRoomCoolDown();
 
 VOID WINAPI ClearFog();
 

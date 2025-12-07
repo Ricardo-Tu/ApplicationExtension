@@ -1007,9 +1007,9 @@ void CpvzDlg::OnBnClickedCheck16()
     int status = ((CButton*)GetDlgItem(IDC_CHECK16))->GetCheck();
 
     if (status)
-        BigMouthFlowerColdDown();
+        BigMouthFlowerCoolDown();
     else
-        RecoverBigMouthFlowerColdDown();
+        RecoverBigMouthFlowerCoolDown();
 }
 
 
@@ -1019,9 +1019,9 @@ void CpvzDlg::OnBnClickedCheck17()
     int status = ((CButton*)GetDlgItem(IDC_CHECK17))->GetCheck();
 
     if (status)
-        PotatoMineColdDown();
+        PotatoMineCoolDown();
     else
-        RecoverPotatoMineColdDown();
+        RecoverPotatoMineCoolDown();
 }
 
 
@@ -1031,9 +1031,9 @@ void CpvzDlg::OnBnClickedCheck18()
     int status = ((CButton*)GetDlgItem(IDC_CHECK18))->GetCheck();
 
     if (status)
-        CornCannonColdDown();
+        CornCannonCoolDown();
     else
-        RecoverCornCannonColdDown();
+        RecoverCornCannonCoolDown();
 }
 
 
@@ -1043,9 +1043,9 @@ void CpvzDlg::OnBnClickedCheck19()
     int status = ((CButton*)GetDlgItem(IDC_CHECK19))->GetCheck();
 
     if (status)
-        MagneticMushRoomColdDown();
+        MagneticMushRoomCoolDown();
     else
-        RecoverMagneticMushRoomColdDown();
+        RecoverMagneticMushRoomCoolDown();
 }
 
 
