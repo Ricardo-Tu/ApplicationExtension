@@ -1,0 +1,8 @@
+/* Visual Studio Settings File */
+{
+  "languages.defaults.general.virtualSpace": false,
+  "textEditor.advanced.adaptiveFormatting": false,
+  "languages.cpp.tabs.character": "space",
+  "environment.documents.saveWithSpecificEncoding": true,
+  "environment.documents.autoSave": true
+}

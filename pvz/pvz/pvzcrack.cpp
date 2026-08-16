@@ -1,4 +1,4 @@
-ï»¿#include "pch.h"
+#include "pch.h"
 #include "common.h"
 
 #define CARDCOOLDOWNTIMER       111
@@ -208,7 +208,7 @@ VOID CardCoolDownTimer(HWND, UINT, UINT_PTR, DWORD)
 
                 szEditStr.Format(L"Card cool down write layer memory failed!\n");
 
-                g_dialog->GetDlgItem(IDC_EDIT2)->GetWindowTextW(szEditStr);
+                g_dialog->GetDlgItem(IDC_EDIT2)->SetWindowTextW(szEditStr);
             }
         }
     }
@@ -433,11 +433,11 @@ VOID WINAPI Plant(ULONG row, ULONG column, ULONG plantType)
 {
     /*
         60                       | pushad                                  |
-        6A FF                    | push FFFFFFFF                           |  å›ºå®šå€¼-1
-        6A 00                    | push 0                                  |  å‹å…¥æ¤ç‰©åºå·
-        B8 01000000              | mov eax,1                               |  yåæ ‡ä¿å­˜åœ¨eaxä¸­
-        6A 02                    | push 2                                  |  æŠŠxåæ ‡å‹å…¥æ ˆä¸­
-        8B1D C09E6A00            | mov ebx,dword ptr ds:[6A9EC0]           |  å‹å…¥å¯å˜ebp
+        6A FF                    | push FFFFFFFF                           |  ¹Ì¶¨Öµ-1
+        6A 00                    | push 0                                  |  Ñ¹ÈëÖ²ÎïĞòºÅ
+        B8 01000000              | mov eax,1                               |  y×ø±ê±£´æÔÚeaxÖĞ
+        6A 02                    | push 2                                  |  °Ñx×ø±êÑ¹ÈëÕ»ÖĞ
+        8B1D C09E6A00            | mov ebx,dword ptr ds:[6A9EC0]           |  Ñ¹Èë¿É±äebp
         8B9B 68070000            | mov ebx,dword ptr ds:[ebx+768]          |
         53                       | push ebx                                |
         BB 20D14000              | mov ebx,40D120                          |

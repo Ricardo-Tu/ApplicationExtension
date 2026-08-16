@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="34">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"护甲（血）"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"makaimura_GG_RE.exe"+05E1B728</Address>
+      <Offsets>
+        <Offset>360</Offset>
+        <Offset>98</Offset>
+        <Offset>80</Offset>
+        <Offset>20</Offset>
+        <Offset>C8</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>12</ID>
+      <Description>"无敌"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+
+aobscanmodule(waq,makaimura_GG_RE.exe,F3 0F 10 43 78 0F 29) // should be unique
+alloc(waq9,$1000,waq)
+
+label(code)
+label(return)
+label(waq99)
+
+
+waq9:
+cmp byte ptr [rcx+110],01
+je waq99
+cmp byte ptr [rcx+110],01
+jne code
+
+waq99:
+  mov [rbx+78],(float)1
+  movss xmm0,[rbx+78]
+  jmp return
+code:
+  movss xmm0,[rbx+78]
+  jmp return
+
+waq:
+  jmp waq9
+return:
+registersymbol(waq)
+
+[DISABLE]
+
+waq:
+  db F3 0F 10 43 78
+
+unregistersymbol(waq)
+dealloc(waq9)
+
+{
+// ORIGINAL CODE - INJECTION POINT: makaimura_GG_RE.exe+EF86E8
+
+makaimura_GG_RE.exe+EF86C5: 57                 - push rdi
+makaimura_GG_RE.exe+EF86C6: 48 83 EC 40        - sub rsp,40
+makaimura_GG_RE.exe+EF86CA: 48 8B 02           - mov rax,[rdx]
+makaimura_GG_RE.exe+EF86CD: 48 8B F9           - mov rdi,rcx
+makaimura_GG_RE.exe+EF86D0: 48 8B CA           - mov rcx,rdx
+makaimura_GG_RE.exe+EF86D3: 48 8B DA           - mov rbx,rdx
+makaimura_GG_RE.exe+EF86D6: FF 50 78           - call qword ptr [rax+78]
+makaimura_GG_RE.exe+EF86D9: 48 8B 47 50        - mov rax,[rdi+50]
+makaimura_GG_RE.exe+EF86DD: 48 83 78 18 00     - cmp qword ptr [rax+18],00
+makaimura_GG_RE.exe+EF86E2: 0F 85 84 00 00 00  - jne makaimura_GG_RE.exe+EF876C
+// ---------- INJECTING HERE ----------
+makaimura_GG_RE.exe+EF86E8: F3 0F 10 43 78     - movss xmm0,[rbx+78]
+// ---------- DONE INJECTING  ----------
+makaimura_GG_RE.exe+EF86ED: 0F 29 74 24 30     - movaps [rsp+30],xmm6
+makaimura_GG_RE.exe+EF86F2: 0F 57 F6           - xorps xmm6,xmm6
+makaimura_GG_RE.exe+EF86F5: 0F 2F F0           - comiss xmm6,xmm0
+makaimura_GG_RE.exe+EF86F8: 73 6D              - jae makaimura_GG_RE.exe+EF8767
+makaimura_GG_RE.exe+EF86FA: 0F 29 7C 24 20     - movaps [rsp+20],xmm7
+makaimura_GG_RE.exe+EF86FF: 48 8B D3           - mov rdx,rbx
+makaimura_GG_RE.exe+EF8702: 48 8B CF           - mov rcx,rdi
+makaimura_GG_RE.exe+EF8705: 0F 5A F8           - cvtps2pd xmm7,xmm0
+makaimura_GG_RE.exe+EF8708: E8 A3 21 25 FF     - call makaimura_GG_RE.exe+14A8B0
+makaimura_GG_RE.exe+EF870D: 48 8B 47 50        - mov rax,[rdi+50]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>4</ID>
+      <Description>"分数"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"makaimura_GG_RE.exe"+05E1BD48</Address>
+      <Offsets>
+        <Offset>E8</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>5</ID>
+      <Description>"时间"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>"makaimura_GG_RE.exe"+05E1BD48</Address>
+      <Offsets>
+        <Offset>150</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>6</ID>
+      <Description>"武器（双击右边武器名修改）"</Description>
+      <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">00:剑
+01:匕首
+02:圣水
+03:铁球
+04:锤子
+05:防护罩
+06:弩
+07:刺球
+09:暗器1
+0A:暗器2
+0B:暗器3
+</DropDownList>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Byte</VariableType>
+      <Address>"makaimura_GG_RE.exe"+05E19390</Address>
+      <Offsets>
+        <Offset>40</Offset>
+        <Offset>80</Offset>
+      </Offsets>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>

@@ -20,3 +20,12 @@ This is a code repository used to extend the functionality of the application.
 ![cs1.6](./texture/cs1.6-1.png)
 ![cs1.6](./texture/cs1.6-2.png)
 ![cs1.6](./texture/cs1.6-3.png)
+
+## 3. 经典回归魔界村
+```bash
+通过网盘分享的文件：经典回归魔界村
+链接: https://pan.baidu.com/s/1wp_yyHupUTfI-I2B2WajmQ?pwd=gbm9 
+提取码: gbm9
+```
+![魔界村](./texture/mj0.png)
+![魔界村](./texture/mj1.png)
